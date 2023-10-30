@@ -1,0 +1,16 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: "Mplus";
+  src: url("../assets/fonts/RoundedMplus1c/MPLUSRounded1c-Regular.ttf")
+    format("truetype");
+  font-weight: normal;
+}
+@font-face {
+  font-family: "Mplus";
+  src: url("../assets/fonts/RoundedMplus1c/MPLUSRounded1c-Bold.ttf")
+    format("truetype");
+  font-weight: bold;
+}
