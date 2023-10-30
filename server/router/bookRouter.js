@@ -23,4 +23,7 @@ router.delete('/:idBuku', bookController.deleteBook);
 // Update buku
 router.put('/:idBuku', bookController.updateBook);
 
+//filter by genre
+router.get('/genre/:genre', bookController.filterByGenre);
+
 module.exports = router;

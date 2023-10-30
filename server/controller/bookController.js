@@ -61,22 +61,50 @@ const bookController = {
       res.status(500).json({ message: "Server Error", error });
     }
   },
+  //filter berdasarkan genre
+  filterByGenre: async (req, res) => {
+    const genre = req.params.genre;
 
+    if (!genre) {
+        return res.status(400).json({ message: "Please provide a genre to filter by." });
+    }
+
+    try {
+        const booksByGenre = await Book.find({ genre: { $regex: new RegExp("^" + genre + "$", "i") } });
+
+        if (booksByGenre.length === 0) {
+            res.status(404).json({ message: `No books found for the genre: ${genre}` });
+        } else {
+            res.json(booksByGenre);
+        }
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+        console.error("Error in filterByGenre:", err.message, req.params);
+    }
+},
+//mencari buku berdasarkan judul contoh "naga" maka buku yang mengandung judul naga akan tertampil
   searchBook: async (req, res) => {
     const { title } = req.body;
-    try {
-      const getSpecificBooks = await Book.find({ title: title });
 
-      if (getSpecificBooks.length === 0) {
-        res.status(404).json({ message: `No books found. ${title}` });
-      } else {
-        res.json(getSpecificBooks);
-      }
-    } catch (err) {
-      res.json(err.message);
-      console.log(err.message, req.query);
+    if (!title) {
+        return res.status(400).json({ message: "Please provide a book title to search." });
     }
-  },
+
+    try {
+        const getSpecificBooks = await Book.find({ title: { $regex: new RegExp(title, "i") } });
+
+        if (getSpecificBooks.length === 0) {
+            res.status(404).json({ message: `No books found with the title: ${title}` });
+        } else {
+            res.json(getSpecificBooks);
+        }
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+        console.error("Error in searchBook:", err.message, req.body);
+    }
+},
+
+
 
   //update buku berdasarkan ID
   updateBook: async (req, res) => {
@@ -101,7 +129,7 @@ const bookController = {
     }
   },
 
-  //menghapus satu buku
+  //menghapus satu buku berdasarkan id yang dipilih
   deleteBook: async (req, res) => {
     try {
       const id = req.params.idBuku;
