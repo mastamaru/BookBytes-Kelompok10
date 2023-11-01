@@ -1,0 +1,65 @@
+const Employee = require("../models/employeeModel"); // Pastikan lokasi model sesuai
+const bcrypt = require("bcrypt");
+
+const employeeController = {
+  // Fungsi untuk menambahkan kasir baru
+  createEmployee: async (req, res) => {
+    try {
+      const { id, name, role, username, password } = req.body;
+
+      // Mengecek apakah username sudah digunakan
+      const existingUser = await Employee.findOne({ username });
+      if (existingUser) {
+        return res
+          .status(400)
+          .json({ success: false, message: "Username already exists" });
+      }
+
+      // Memeriksa panjang password
+      if (password.length < 6) {
+        return res.status(400).json({
+          success: false,
+          message: "Password should be at least 6 characters long",
+        });
+      }
+
+      // Jika ID tidak disediakan, tentukan ID berdasarkan default value
+      let employeeID = id;
+      if (!id) {
+        const lastEmployee = await Employee.find().sort({ _id: -1 }).limit(1);
+        const lastID =
+          lastEmployee[0] && lastEmployee[0].id
+            ? parseInt(lastEmployee[0].id.slice(1))
+            : 0;
+        employeeID = `C${lastID + 1}`;
+      }
+
+      // Hashing password
+      const salt = await bcrypt.genSalt(10);
+      const hashedPassword = await bcrypt.hash(password, salt);
+
+      const employee = new Employee({
+        id: employeeID,
+        name,
+        role,
+        username,
+        password: hashedPassword,
+      });
+
+      await employee.save();
+      res.status(201).json({ success: true, data: employee });
+    } catch (error) {
+      res.status(400).json({ success: false, message: error.message });
+    }
+  },
+  getAllEmployees: async (req, res) => {
+    try {
+      const employees = await Employee.find(); // Mengambil semua data employee
+      res.status(200).json({ success: true, data: employees });
+    } catch (error) {
+      res.status(500).json({ success: false, message: error.message });
+    }
+  },
+};
+
+module.exports = employeeController;
