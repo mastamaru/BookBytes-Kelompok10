@@ -1,4 +1,5 @@
 const express = require("express");
+const cors = require("cors");
 require("dotenv").config();
 
 const connectDB = require("./database/connection");
@@ -8,6 +9,7 @@ const transactionRouter = require("./router/transactionRouter");
 const employeeRouter = require("./router/employeeRouter");
 
 const app = express();
+app.use(cors()); // Middleware untuk mengizinkan CORS
 
 app.use(express.json()); // Middleware untuk parsing JSON requests
 app.use("/books", bookRouter); // Menggunakan bookRouter untuk endpoint '/books'
