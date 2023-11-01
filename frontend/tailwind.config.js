@@ -10,7 +10,11 @@ module.exports = {
       mplus: ["Mplus"],
       sans: ["Roboto"],
     },
-    extend: {},
+    extend: {
+      opacity: {
+        0: "0",
+      },
+    },
   },
   plugins: [],
 };

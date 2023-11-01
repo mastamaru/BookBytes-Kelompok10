@@ -14,3 +14,53 @@
     format("truetype");
   font-weight: bold;
 }
+@font-face {
+  font-family: "Mplus";
+  src: url("../assets/fonts/RoundedMplus1c/MPLUSRounded1c-Medium.ttf")
+    format("truetype");
+  font-weight: medium;
+}
+
+.table-container table {
+  width: 1315px;
+  table-layout: fixed;
+  text-align: left;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-collapse: separate;
+  border-spacing: 0;
+  overflow: hidden;
+  border-radius: 12px;
+}
+.table-container th {
+  font-family: "Mplus";
+  font-weight: bold;
+  font-size: 22px;
+  padding: 20px 20px 46.5px 20px;
+  background-color: #c4c4c4;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+}
+.table-container td {
+  font-family: "Mplus";
+  font-weight: medium;
+  font-size: 16px;
+  padding: 20px 20px 55.5px 20px;
+  border-right: 1px solid rgba(0, 0, 0, 0.2);
+  border-left: 1px solid rgba(0, 0, 0, 0.2);
+}
+.table-container th:first-child {
+  border-top-left-radius: 12px;
+}
+
+.table-container th:last-child {
+  border-top-right-radius: 12px;
+}
+.table-container tr:last-child td:first-child {
+  border-bottom-left-radius: 12px;
+}
+
+.table-container tr:last-child td:last-child {
+  border-bottom-right-radius: 12px;
+}
+.padded-right td {
+  padding-right: 200px;
+}
