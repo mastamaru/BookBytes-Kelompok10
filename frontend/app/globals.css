@@ -64,3 +64,11 @@
 .padded-right td {
   padding-right: 200px;
 }
+
+.input {
+  font-family: Roboto;
+  font-weight: normal;
+  border: 2px solid #c4c4c4;
+  background: rgba(251, 185, 28, 0);
+  border-radius: 5px;
+}
