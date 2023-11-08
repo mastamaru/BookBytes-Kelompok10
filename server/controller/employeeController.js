@@ -60,6 +60,63 @@ const employeeController = {
       res.status(500).json({ success: false, message: error.message });
     }
   },
+
+  updateEmployee: async (req, res) => {
+    const { idEmployee } = req.params;
+    const updatedEmployeeData = req.body;
+
+    try {
+      // Cek apakah karyawan dengan ID yang diberikan ada
+      const existingEmployee = await Employee.findOne({ id: idEmployee });
+
+      // Log the existing employee for debugging
+      console.log('Existing Employee:', existingEmployee);
+
+      if (!existingEmployee) {
+        return res.status(404).json({ message: "Employee not found" });
+      }
+
+      // Jika ada, perbarui data karyawan
+      // Hash password jika ada perubahan
+      if (updatedEmployeeData.password) {
+        const salt = await bcrypt.genSalt(10);
+        updatedEmployeeData.password = await bcrypt.hash(updatedEmployeeData.password, salt);
+      }
+
+      const updatedEmployee = await Employee.findOneAndUpdate(
+        { id: idEmployee },
+        updatedEmployeeData,
+        { new: true }
+      );
+
+      res.json(updatedEmployee);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: "Server Error" });
+    }
+  },
+
+  deleteEmployee: async (req, res) => {
+    const { idEmployee } = req.params;
+
+    try {
+      // Cek apakah karyawan dengan ID yang diberikan ada
+      const existingEmployee = await Employee.findOne({ id: idEmployee });
+
+      if (!existingEmployee) {
+        return res.status(404).json({ message: "Employee not found" });
+      }
+
+      // Jika ada, hapus data karyawan
+      await Employee.deleteOne({ id: idEmployee });
+
+      res.json({ message: "Employee deleted successfully" });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: "Server Error" });
+    }
+  },
+
 };
 
 module.exports = employeeController;
