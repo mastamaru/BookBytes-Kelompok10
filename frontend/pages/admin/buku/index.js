@@ -38,18 +38,27 @@ export default function Buku() {
                         <h1 className="font-mplus font-medium text-[65px]">
                             Data Buku
                         </h1>
-                        <div className="table-container mt-12 max-h-[60vh] overflow-auto">
-                            <table>
+                        <Button
+                            text="+ Tambah Buku"
+                            color="blue"
+                            className="flex py-2 px-4 text-[24px] items-center gap-2"
+                        />
+
+                        <div className="table-container mt-12 max-h-[60vh] overflow-auto" style={{ maxWidth: '1100px', marginLeft: '100px' }}>
+                            <table style={{ tableLayout: 'fixed', width: '100%' }}>
+                                <colgroup>
+                                    <col style={{ width: '10%' }} />
+                                </colgroup>
                                 <thead>
                                     <tr>
-                                        <th>ID Buku</th>
-                                        <th>Judul Buku</th>
-                                        <th>Pengarang</th>
-                                        <th>Penerbit</th>
-                                        <th>Tahun Terbit</th>
-                                        <th>Genre</th>
-                                        <th>Harga</th>
-                                        <th>Aksi</th>
+                                        <th style={{ fontSize: '16px' }}>ID Buku</th>
+                                        <th style={{ fontSize: '16px' }}>Judul Buku</th>
+                                        <th style={{ fontSize: '16px' }}>Pengarang</th>
+                                        <th style={{ fontSize: '16px' }}>Penerbit</th>
+                                        <th style={{ fontSize: '16px' }}>Tahun Terbit</th>
+                                        <th style={{ fontSize: '16px' }}>Genre</th>
+                                        <th style={{ fontSize: '16px' }}>Harga</th>
+                                        <th style={{ fontSize: '16px' }}>Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
