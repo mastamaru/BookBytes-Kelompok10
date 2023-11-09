@@ -135,7 +135,7 @@ const employeeController = {
         return res.json("Wrong Password");
       }
       
-      res.json("success");
+      res.json(existingEmployee.role);
     } 
   catch (error) {
       console.error(error);
