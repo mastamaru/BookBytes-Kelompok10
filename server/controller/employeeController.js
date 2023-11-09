@@ -117,6 +117,32 @@ const employeeController = {
     }
   },
 
+  verifyEmployee: async (req, res) => {
+    const { username, password } = req.body;
+
+    try {
+      // Verify if the employee with the given name exists
+      const existingEmployee = await Employee.findOne({ username });
+
+      if (!existingEmployee) {
+        return res.json("fail finding username" );
+      }
+
+      // Verify if the provided password matches the stored hashed password
+      const passwordMatch = await bcrypt.compare(password, existingEmployee.password);
+
+      if (!passwordMatch) {
+        return res.json("Wrong Password");
+      }
+      
+      res.json("success");
+    } 
+  catch (error) {
+      console.error(error);
+      res.status(500).json({ message: "Server Error" });
+    }
+  },
+
 };
 
 module.exports = employeeController;
