@@ -125,7 +125,7 @@ const employeeController = {
       const existingEmployee = await Employee.findOne({ username });
 
       if (!existingEmployee) {
-        return res.json("fail finding username" );
+        return res.json("Wrong username" );
       }
 
       // Verify if the provided password matches the stored hashed password
