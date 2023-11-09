@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import { fetchBooks } from "@/lib/getBook";
 import NavbarAdmin from "@/components/NavbarAdmin";
 import Button from "@/components/Button";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 export default function Buku() {
     const [books, setBooks] = useState([]);
 
@@ -60,9 +62,15 @@ export default function Buku() {
                                             <td>{book.year}</td>
                                             <td>{book.genre}</td>
                                             <td>{book.price}</td>
-                                            <td>
-
+                                            <td style={{ display: 'flex', justifyContent: 'space-evenly', alignItems: 'center', width: '100%' }}>
+                                                <button onClick={() => handleEditBook(book.bookID)}>
+                                                    <FontAwesomeIcon icon={faEdit} style={{ color: 'blue' }} />
+                                                </button>
+                                                <button onClick={() => handleDeleteBook(book.bookID)}>
+                                                    <FontAwesomeIcon icon={faTrash} style={{ color: 'red' }} />
+                                                </button>
                                             </td>
+
                                         </tr>
                                     ))}
                                 </tbody>
