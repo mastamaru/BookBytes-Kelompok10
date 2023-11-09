@@ -15,6 +15,9 @@ router.put("/:idEmployee", employeeController.updateEmployee);
 // Route untuk delete employee
 router.delete("/:idEmployee", employeeController.deleteEmployee);
 
+//Route untuk verifikasi login employee
+router.post("/login", employeeController.verifyEmployee);
+
 
 
 module.exports = router;
