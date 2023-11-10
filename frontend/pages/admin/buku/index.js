@@ -35,15 +35,14 @@ export default function Buku() {
                 <div className="pt-[260px] relative">
                     <NavbarAdmin isActive={true} />
                     <div className="flex flex-col items-center ">
-                        <h1 className="font-mplus font-medium text-[65px]">
+                        <h1 className="font-mplus font-medium text-[65px] ">
                             Data Buku
                         </h1>
                         <Button
                             text="+ Tambah Buku"
                             color="blue"
-                            className="flex py-2 px-4 text-[24px] items-center gap-2"
+                            className="py-2 px-4 text-[24px] mr-auto ml-[260px]"
                         />
-
                         <div className="table-container mt-12 max-h-[60vh] overflow-auto" style={{ maxWidth: '1100px', marginLeft: '100px' }}>
                             <table style={{ tableLayout: 'fixed', width: '100%' }}>
                                 <colgroup>
@@ -95,6 +94,7 @@ export default function Buku() {
                     className="flex py-[15px] px-5 text-[24px] items-center gap-2 absolute bottom-[5%] left-[1%]"
                 />
             </section>
+
         </>
     );
 }
