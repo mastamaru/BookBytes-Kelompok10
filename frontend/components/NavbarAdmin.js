@@ -1,5 +1,5 @@
 import Link from "next/link";
-export default function NavbarAdmin({ isActive }) {
+export default function NavbarAdmin({ isActive, className }) {
   const buttons = [
     {
       label: "Data Buku",
@@ -20,7 +20,9 @@ export default function NavbarAdmin({ isActive }) {
 
   return (
     <>
-      <div className="flex flex-row items-end gap-6 absolute top-[10.6%] left-[22%] leading-normal font-mplus font-bold text-[35px]">
+      <div
+        className={`flex flex-row items-end gap-6 absolute ${className} leading-normal font-mplus font-bold text-[35px]`}
+      >
         {buttons.map((button, index) => (
           <Link href={button.route} key={index}>
             <button
