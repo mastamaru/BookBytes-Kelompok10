@@ -1,5 +1,6 @@
 import Link from "next/link";
-export default function NavbarAdmin({ isActive, className }) {
+
+export default function NavbarAdmin({ className, selectedLabel }) {
   const buttons = [
     {
       label: "Data Buku",
@@ -9,7 +10,7 @@ export default function NavbarAdmin({ isActive, className }) {
     {
       label: "Data Transaksi",
       route: "/admin/transaksi",
-      classes: "px-[11px] py-[46px] text-[45px] bg-[#B0ABD1]",
+      classes: "px-[33px] py-3  bg-[#B0ABD1]",
     },
     {
       label: "Data Kasir",
@@ -27,7 +28,7 @@ export default function NavbarAdmin({ isActive, className }) {
           <Link href={button.route} key={index}>
             <button
               className={`${button.classes} rounded-[5px] ${
-                !isActive == true ? "py-[48px]" : ""
+                selectedLabel === button.label ? "py-[48px] text-[45px]" : ""
               }`}
             >
               {button.label}

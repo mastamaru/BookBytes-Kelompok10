@@ -35,7 +35,10 @@ export default function Karyawan() {
           alt="logo"
         />
         <div className="pt-[260px] relative">
-          <NavbarAdmin isActive={true} className="top-[7.5%] left-[22%]" />
+          <NavbarAdmin
+            selectedLabel="Data Kasir"
+            className="top-[7.2%] left-[22%]"
+          />
           <div className="w-[1200px] mx-auto">
             <div className="flex flex-col items-center">
               <h1 className="font-mplus font-bold text-[65px] pt-3 pb-10">

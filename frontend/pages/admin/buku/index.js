@@ -33,16 +33,19 @@ export default function Buku() {
           alt="logo"
         />
         <div className="pt-[260px] relative">
-          <NavbarAdmin isActive={true} className="left-[22%] top-[6.5%]" />
+          <NavbarAdmin
+            selectedLabel="Data Buku"
+            className="left-[22%] top-[7%]"
+          />
           <div className="flex flex-col items-center ">
             <h1 className="font-mplus font-medium text-[65px] ">Data Buku</h1>
             <Button
               text="+ Tambah Buku"
               color="blue"
-              className="py-2 px-4 text-[24px] mr-auto ml-[260px]"
+              className="py-2 px-4 text-[24px] absolute left-[24%] top-[37%]"
             />
             <div
-              className="table-container mt-12 max-h-[60vh] overflow-auto"
+              className="table-container mt-12 max-h-[55vh] overflow-y-scroll"
               style={{ maxWidth: "1100px", marginLeft: "100px" }}
             >
               <table style={{ tableLayout: "fixed", width: "100%" }}>
