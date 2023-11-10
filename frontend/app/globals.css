@@ -20,6 +20,12 @@
     format("truetype");
   font-weight: medium;
 }
+@font-face {
+  font-family: "Roboto";
+  src: url("../assets/fonts/Roboto/Roboto-Regular.ttf")
+    format("truetype");
+  font-weight: normal;
+}
 
 .table-container table {
   width: 1315px;

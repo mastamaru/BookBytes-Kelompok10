@@ -22,9 +22,8 @@ export default function NavbarAdmin({ isActive }) {
     <>
       <div className="flex flex-row items-end gap-6 absolute top-[10.6%] left-[22%] leading-normal font-mplus font-bold text-[35px]">
         {buttons.map((button, index) => (
-          <Link href={button.route}>
+          <Link href={button.route} key={index}>
             <button
-              key={index}
               className={`${button.classes} rounded-[5px] ${
                 !isActive == true ? "py-[48px]" : ""
               }`}
