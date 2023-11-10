@@ -44,7 +44,7 @@ export default function Transaksi() {
               Data Kasir
             </button>
           </div> */}
-          <NavbarAdmin isActive={true} />
+          <NavbarAdmin isActive={true} className="top-[8.4%] left-[22%]" />
           <div className="flex flex-col items-center ">
             <h1 className="font-mplus font-medium text-[65px]">
               Data Transaksi

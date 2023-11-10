@@ -12,10 +12,10 @@ export default function Karyawan() {
   useEffect(() => {
     const getEmployees = async () => {
       try {
-        const data = await fetchEmployees(); 
+        const data = await fetchEmployees();
         console.log("Fetched Employees:", data);
         setEmployees(data);
-        console.log(employees)
+        console.log(employees);
       } catch (error) {
         console.error(error);
       }
@@ -35,59 +35,72 @@ export default function Karyawan() {
           alt="logo"
         />
         <div className="pt-[260px] relative">
-          <NavbarAdmin isActive={true} />
+          <NavbarAdmin isActive={true} className="top-[7.5%] left-[22%]" />
           <div className="w-[1200px] mx-auto">
             <div className="flex flex-col items-center">
-                <h1 className="font-mplus font-bold text-[65px] pt-3 pb-10">
+              <h1 className="font-mplus font-bold text-[65px] pt-3 pb-10">
                 Data Karyawan
-                </h1>
-                <Button
+              </h1>
+              <Button
                 text="+ Tambah Karyawan"
                 color="blue"
                 className="py-2 px-4 text-[24px] mr-auto ml-[100px]"
-                />
-    
-                <div className="table-container mt-5 max-h-[60vh] overflow-auto" style={{ maxWidth: "1100px", marginLeft: "100px" }}>
+              />
+
+              <div
+                className="table-container mt-5 max-h-[60vh] overflow-auto"
+                style={{ maxWidth: "1100px", marginLeft: "100px" }}
+              >
                 <table style={{ tableLayout: "fixed", width: "100%" }}>
-                    <colgroup>
+                  <colgroup>
                     <col style={{ width: "10%" }} />
-                    </colgroup>
-                    <thead>
+                  </colgroup>
+                  <thead>
                     <tr>
-                        <th style={{ fontSize: "16px" }}>ID Karyawan</th>
-                        <th style={{ fontSize: "16px" }}>Nama</th>
-                        <th style={{ fontSize: "16px" }}>Role</th>
-                        <th style={{ fontSize: "16px" }}>Username</th>
-                        <th style={{ fontSize: "16px" }}>Aksi</th>
+                      <th style={{ fontSize: "16px" }}>ID Karyawan</th>
+                      <th style={{ fontSize: "16px" }}>Nama</th>
+                      <th style={{ fontSize: "16px" }}>Role</th>
+                      <th style={{ fontSize: "16px" }}>Username</th>
+                      <th style={{ fontSize: "16px" }}>Aksi</th>
                     </tr>
-                    </thead>
-                    <tbody>
+                  </thead>
+                  <tbody>
                     {employees.map((employee) => (
-                        <tr key={employee.id}>
+                      <tr key={employee.id}>
                         <td>{employee.id}</td>
                         <td>{employee.name}</td>
                         <td>{employee.role}</td>
                         <td>{employee.username}</td>
                         <td
-                            style={{
+                          style={{
                             display: "flex",
                             justifyContent: "space-evenly",
                             alignItems: "center",
                             width: "100%",
-                            }}
+                          }}
                         >
-                            <button onClick={() => handleEditEmployee(employee.id)}>
-                            <FontAwesomeIcon icon={faEdit} style={{ color: "blue" }} />
-                            </button>
-                            <button onClick={() => handleDeleteEmployee(employee.id)}>
-                            <FontAwesomeIcon icon={faTrash} style={{ color: "red" }} />
-                            </button>
+                          <button
+                            onClick={() => handleEditEmployee(employee.id)}
+                          >
+                            <FontAwesomeIcon
+                              icon={faEdit}
+                              style={{ color: "blue" }}
+                            />
+                          </button>
+                          <button
+                            onClick={() => handleDeleteEmployee(employee.id)}
+                          >
+                            <FontAwesomeIcon
+                              icon={faTrash}
+                              style={{ color: "red" }}
+                            />
+                          </button>
                         </td>
-                        </tr>
+                      </tr>
                     ))}
-                    </tbody>
+                  </tbody>
                 </table>
-                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -100,6 +113,4 @@ export default function Karyawan() {
       </section>
     </>
   );
-  
-
 }
