@@ -5,6 +5,7 @@ import NavbarAdmin from "@/components/NavbarAdmin";
 import Button from "@/components/Button";
 import AddBookModal from "@/lib/addBookModal";
 import DeleteBookModal from "@/lib/delBookModal";
+import EditBookModal from "@/lib/editBookModal";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { delBook } from "@/lib/delBook";
@@ -12,6 +13,7 @@ export default function Buku() {
   const [books, setBooks] = useState([]);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [selectedBookId, setSelectedBookId] = useState(null);
 
   useEffect(() => {
@@ -38,6 +40,19 @@ export default function Buku() {
     setSelectedBookId(bookId);
     setIsDeleteModalOpen(true);
   };
+
+  const handleEditBookClick = (bookId) => {
+    const bookToEdit = books.find((book) => book.bookID === bookId);
+    setSelectedBookId(bookToEdit);
+    setIsEditModalOpen(true);
+  }
+
+  const handleEditBook = async () => {
+    const updatedBooks = await fetchBooks();
+    setBooks(updatedBooks);
+
+    setIsEditModalOpen(false);
+  }
 
   const confirmDeleteBook = async () => {
     try {
@@ -120,12 +135,18 @@ export default function Buku() {
                             width: "100%",
                           }}
                         >
-                          <button onClick={() => handleEditBook(book.bookID)}>
+                          <button onClick={() => handleEditBookClick(book.bookID)}>
                             <FontAwesomeIcon
                               icon={faEdit}
                               style={{ color: "blue" }}
                             />
                           </button>
+                          <EditBookModal
+                            isOpen={isEditModalOpen}
+                            onClose={() => setIsEditModalOpen(false)}
+                            onEditBook={handleEditBook}
+                            selectedBook={selectedBookId}
+                          />
                           <button onClick={() => handleDeleteBook(book.bookID)}>
                             <FontAwesomeIcon
                               icon={faTrash}
