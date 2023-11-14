@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { fetchTransactions } from "@/lib/getTransaction";
 import moment from "moment";
@@ -7,8 +8,19 @@ import NavbarAdmin from "@/components/NavbarAdmin";
 import Button from "@/components/Button";
 export default function Transaksi() {
   const [transactions, setTransactions] = useState([]);
-
+  const router = useRouter();
   useEffect(() => {
+    //add token validation to check user session
+    const token = localStorage.getItem("token");
+
+    const isTokenValid = () => {
+      return token != null;
+    };
+
+    if (!isTokenValid()) {
+      router.push("/login");
+    }
+
     const getTransaction = async () => {
       try {
         const data = await fetchTransactions();
@@ -21,6 +33,15 @@ export default function Transaksi() {
 
     getTransaction(); // Memanggil fungsi getTransaction saat komponen dimuat
   }, []); // Menambahkan array kosong sebagai dependency agar useEffect hanya berjalan sekali saat komponen dimuat
+
+  // Fungsi untuk menangani proses logout
+  const handleLogout = () => {
+    // Menghapus token dari localStorage
+    localStorage.removeItem("token");
+
+    // Redirect ke halaman login
+    router.push("/login");
+  };
 
   return (
     <>
@@ -91,6 +112,7 @@ export default function Transaksi() {
           </div>
         </div>
         <Button
+          onClick={handleLogout}
           icon={"/assets/signout.svg"}
           text={"Keluar"}
           color="red"
