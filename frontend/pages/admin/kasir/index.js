@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { fetchEmployees } from "@/lib/getEmployee"; // Make sure to create the fetchEmployees function
 import NavbarAdmin from "@/components/NavbarAdmin";
@@ -8,8 +9,20 @@ import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
 
 export default function Karyawan() {
   const [employees, setEmployees] = useState([]);
+  const router = useRouter();
 
   useEffect(() => {
+    //add token validation to check user session
+    const token = localStorage.getItem("token");
+
+    const isTokenValid = () => {
+      return token != null;
+    };
+
+    if (!isTokenValid()) {
+      router.push("/login");
+    }
+
     const getEmployees = async () => {
       try {
         const data = await fetchEmployees();
@@ -23,6 +36,15 @@ export default function Karyawan() {
 
     getEmployees();
   }, []);
+
+  // Fungsi untuk menangani proses logout
+  const handleLogout = () => {
+    // Menghapus token dari localStorage
+    localStorage.removeItem("token");
+
+    // Redirect ke halaman login
+    router.push("/login");
+  };
 
   return (
     <>
@@ -108,6 +130,7 @@ export default function Karyawan() {
           </div>
         </div>
         <Button
+          onClick={handleLogout}
           icon="/assets/signout.svg"
           text="Keluar"
           color="red"

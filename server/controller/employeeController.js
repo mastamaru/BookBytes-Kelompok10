@@ -1,5 +1,6 @@
 const Employee = require("../models/employeeModel"); // Pastikan lokasi model sesuai
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
 const employeeController = {
   // Fungsi untuk menambahkan kasir baru
@@ -70,7 +71,7 @@ const employeeController = {
       const existingEmployee = await Employee.findOne({ id: idEmployee });
 
       // Log the existing employee for debugging
-      console.log('Existing Employee:', existingEmployee);
+      console.log("Existing Employee:", existingEmployee);
 
       if (!existingEmployee) {
         return res.status(404).json({ message: "Employee not found" });
@@ -80,7 +81,10 @@ const employeeController = {
       // Hash password jika ada perubahan
       if (updatedEmployeeData.password) {
         const salt = await bcrypt.genSalt(10);
-        updatedEmployeeData.password = await bcrypt.hash(updatedEmployeeData.password, salt);
+        updatedEmployeeData.password = await bcrypt.hash(
+          updatedEmployeeData.password,
+          salt
+        );
       }
 
       const updatedEmployee = await Employee.findOneAndUpdate(
@@ -125,24 +129,29 @@ const employeeController = {
       const existingEmployee = await Employee.findOne({ username });
 
       if (!existingEmployee) {
-        return res.json("Wrong username" );
+        return res.json("Wrong username");
       }
 
       // Verify if the provided password matches the stored hashed password
-      const passwordMatch = await bcrypt.compare(password, existingEmployee.password);
+      const passwordMatch = await bcrypt.compare(
+        password,
+        existingEmployee.password
+      );
 
-      if (!passwordMatch) {
-        return res.json("Wrong Password");
+      if (passwordMatch) {
+        const token = jwt.sign(
+          { id: existingEmployee._id, role: existingEmployee.role },
+          process.env.JWT_SECRET,
+          { expiresIn: "12h" }
+        );
+
+        res.json({ token, role: existingEmployee.role });
       }
-      
-      res.json(existingEmployee.role);
-    } 
-  catch (error) {
+    } catch (error) {
       console.error(error);
       res.status(500).json({ message: "Server Error" });
     }
   },
-
 };
 
 module.exports = employeeController;

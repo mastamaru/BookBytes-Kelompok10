@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 import { fetchBooks } from "@/lib/getBook";
 import NavbarAdmin from "@/components/NavbarAdmin";
 import Button from "@/components/Button";
@@ -15,8 +16,19 @@ export default function Buku() {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [selectedBookId, setSelectedBookId] = useState(null);
-
+  const router = useRouter();
   useEffect(() => {
+    //add token validation to check user session
+    const token = localStorage.getItem("token");
+
+    const isTokenValid = () => {
+      return token != null;
+    };
+
+    if (!isTokenValid()) {
+      router.push("/login");
+    }
+
     const getBook = async () => {
       try {
         const data = await fetchBooks();
@@ -66,6 +78,14 @@ export default function Buku() {
       console.error("Error deleting book", error);
     }
   };
+  // Fungsi untuk menangani proses logout
+  const handleLogout = () => {
+    // Menghapus token dari localStorage
+    localStorage.removeItem("token");
+
+    // Redirect ke halaman login
+    router.push("/login");
+  };
 
   return (
     <>
@@ -90,7 +110,6 @@ export default function Buku() {
                 color="blue"
                 className="py-2 px-4 text-[24px] mr-auto ml-[100px]"
                 onClick={() => setIsAddModalOpen(true)}
-
               />
               <AddBookModal
                 isOpen={isAddModalOpen}
@@ -98,7 +117,7 @@ export default function Buku() {
                 onAddBook={handleAddBook}
               />
               <div
-                className="table-container mt-12 max-h-[55vh] overflow-y-scroll"
+                className="table-container mt-12 max-h-[48vh] overflow-y-scroll"
                 style={{ maxWidth: "1100px", marginLeft: "100px" }}
               >
                 <table style={{ tableLayout: "fixed", width: "100%" }}>
@@ -168,6 +187,7 @@ export default function Buku() {
           </div>
         </div>
         <Button
+          onClick={handleLogout}
           icon={"/assets/signout.svg"}
           text={"Keluar"}
           color="red"
