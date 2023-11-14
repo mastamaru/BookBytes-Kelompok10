@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import Button from "@/components/Button";
 import { editBook } from "@/lib/editBook";
 
+const predefinedGenres = ["Fiction", "Non-Fiction", "Sci-Fi", "Mystery", "Fantasy", "Drama"];
+
 const modalOverlayStyle = {
     position: "fixed",
     top: 0,
@@ -175,14 +177,20 @@ const EditBookModal = ({ isOpen, onClose, onEditBook, selectedBook }) => {
 
                         <div style={inputContainerStyle}>
                             <label style={labelStyle}>Genre</label>
-                            <input
-                                type="text"
+                            <select
                                 value={editedBook.genre}
-                                onChange={(e) =>
-                                    setEditedBook({ ...editedBook, genre: e.target.value })
-                                }
+                                onChange={(e) => setEditedBook({ ...editedBook, genre: e.target.value })}
                                 style={inputStyle}
-                            />
+                            >
+                                <option value="" disabled>
+                                    Select a genre
+                                </option>
+                                {predefinedGenres.map((genre) => (
+                                    <option key={genre} value={genre}>
+                                        {genre}
+                                    </option>
+                                ))}
+                            </select>
                         </div>
 
                         <div style={inputContainerStyle}>
