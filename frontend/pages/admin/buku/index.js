@@ -3,10 +3,12 @@ import { useEffect, useState } from "react";
 import { fetchBooks } from "@/lib/getBook";
 import NavbarAdmin from "@/components/NavbarAdmin";
 import Button from "@/components/Button";
+import AddBookModal from "@/lib/addBookModal";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
 export default function Buku() {
   const [books, setBooks] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     const getBook = async () => {
@@ -21,6 +23,12 @@ export default function Buku() {
 
     getBook();
   }, []);
+
+  const handleAddBook = async () => {
+    // Refetch books after adding a new book
+    const updatedBooks = await fetchBooks();
+    setBooks(updatedBooks);
+  };
 
   return (
     <>
@@ -43,6 +51,13 @@ export default function Buku() {
               text="+ Tambah Buku"
               color="blue"
               className="py-2 px-4 text-[24px] absolute left-[24%] top-[37%]"
+              onClick={() => setIsModalOpen(true)}
+
+            />
+            <AddBookModal
+              isOpen={isModalOpen}
+              onClose={() => setIsModalOpen(false)}
+              onAddBook={handleAddBook}
             />
             <div
               className="table-container mt-12 max-h-[55vh] overflow-y-scroll"
