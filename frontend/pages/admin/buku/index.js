@@ -4,11 +4,15 @@ import { fetchBooks } from "@/lib/getBook";
 import NavbarAdmin from "@/components/NavbarAdmin";
 import Button from "@/components/Button";
 import AddBookModal from "@/lib/addBookModal";
+import DeleteBookModal from "@/lib/delBookModal";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { delBook } from "@/lib/delBook";
 export default function Buku() {
   const [books, setBooks] = useState([]);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [selectedBookId, setSelectedBookId] = useState(null);
 
   useEffect(() => {
     const getBook = async () => {
@@ -28,6 +32,24 @@ export default function Buku() {
     // Refetch books after adding a new book
     const updatedBooks = await fetchBooks();
     setBooks(updatedBooks);
+  };
+
+  const handleDeleteBook = (bookId) => {
+    setSelectedBookId(bookId);
+    setIsDeleteModalOpen(true);
+  };
+
+  const confirmDeleteBook = async () => {
+    try {
+      await delBook(selectedBookId);
+
+      const updatedBooks = await fetchBooks();
+      setBooks(updatedBooks);
+
+      setIsDeleteModalOpen(false);
+    } catch (error) {
+      console.error("Error deleting book", error);
+    }
   };
 
   return (
@@ -52,12 +74,12 @@ export default function Buku() {
                 text="+ Tambah Buku"
                 color="blue"
                 className="py-2 px-4 text-[24px] mr-auto ml-[100px]"
-                onClick={() => setIsModalOpen(true)}
+                onClick={() => setIsAddModalOpen(true)}
 
               />
               <AddBookModal
-                isOpen={isModalOpen}
-                onClose={() => setIsModalOpen(false)}
+                isOpen={isAddModalOpen}
+                onClose={() => setIsAddModalOpen(false)}
                 onAddBook={handleAddBook}
               />
               <div
@@ -110,6 +132,11 @@ export default function Buku() {
                               style={{ color: "red" }}
                             />
                           </button>
+                          <DeleteBookModal
+                            isOpen={isDeleteModalOpen}
+                            onClose={() => setIsDeleteModalOpen(false)}
+                            onDeleteBook={confirmDeleteBook}
+                          />
                         </td>
                       </tr>
                     ))}
