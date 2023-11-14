@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import { fetchEmployees } from "@/lib/getEmployee";
+import { fetchEmployees } from "@/lib/FunctionEmployee";
 import moment from "moment";
 import "moment-timezone";
 import NavbarAdmin from "@/components/NavbarAdmin";

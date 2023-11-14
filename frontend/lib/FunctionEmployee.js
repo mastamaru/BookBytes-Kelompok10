@@ -15,3 +15,21 @@ export const fetchEmployees = async () => {
     }
 };
 
+export const delEmployees = async(employId) => {
+    try {
+        const response = await fetch(`${API_URL}/employee/${employId}`,{
+        method: "DELETE",
+    });
+
+    if (response.ok){
+        alert("Book sucsessfully deleted");
+    }
+    else{
+        const errorData = await response.json();
+        alert("Fail")
+        console.log(errorData)
+    }
+    } catch (error){
+        console.error("Error deleting book:", error);
+    }
+};
