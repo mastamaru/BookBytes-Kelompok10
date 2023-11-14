@@ -42,13 +42,13 @@ const buttonStyle = {
 const cancelButtonStyle = {
     ...buttonStyle,
     marginRight: "10px", // Adjust the margin between buttons
-    background: "red",
+    background: "#fd4d3e",
     color: "#fff",
 };
 
 const submitButtonStyle = {
     ...buttonStyle,
-    background: "green",
+    background: "#18ef61",
     color: "#fff",
 };
 

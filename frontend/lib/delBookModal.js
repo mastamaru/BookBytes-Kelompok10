@@ -27,7 +27,7 @@ const modalPopupStyle = {
 const buttonContainerStyle = {
     marginTop: "20px",
     display: "flex",
-    justifyContent: "flex-end",
+    justifyContent: "center",
 };
 
 const buttonStyle = {
