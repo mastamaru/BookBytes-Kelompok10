@@ -37,6 +37,15 @@ export default function Karyawan() {
     getEmployees();
   }, []);
 
+  // Fungsi untuk menangani proses logout
+  const handleLogout = () => {
+    // Menghapus token dari localStorage
+    localStorage.removeItem("token");
+
+    // Redirect ke halaman login
+    router.push("/login");
+  };
+
   return (
     <>
       <section className="body bg-[url('/assets/bgbookopen.png')] relative h-[100vh] bg-cover">
@@ -121,6 +130,7 @@ export default function Karyawan() {
           </div>
         </div>
         <Button
+          onClick={handleLogout}
           icon="/assets/signout.svg"
           text="Keluar"
           color="red"
