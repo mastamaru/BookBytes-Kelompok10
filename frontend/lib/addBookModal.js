@@ -21,8 +21,11 @@ const modalPopupStyle = {
     boxShadow: "0 0 10px rgba(0, 0, 0, 0.2)",
     maxWidth: "400px",
     width: "100%",
+    maxHeight: "70vh", // Set your desired maximum height
+    overflowY: "auto", // Enable vertical scrolling if content overflows
     padding: "20px",
 };
+
 
 const buttonContainerStyle = {
     marginTop: "20px", // Adjust the margin to control the spacing
@@ -51,15 +54,20 @@ const submitButtonStyle = {
 
 const labelStyle = {
     marginBottom: "5px",
+    fontweight: "bold",
+};
+
+const inputContainerStyle = {
+    display: "flex",
+    flexDirection: "column",
+    marginBottom: "15px",
 };
 
 const inputStyle = {
     width: "100%", // Set to your desired width
-    maxWidth: "250px", // Set a maximum width for the input fields
     padding: "10px",
     borderRadius: "8px",
     boxSizing: "border-box",
-    marginBottom: "15px",
     border: "1px solid #ccc",
 };
 
@@ -104,10 +112,10 @@ const AddBookModal = ({ isOpen, onClose, onAddBook }) => {
             {isOpen && (
                 <div style={modalOverlayStyle}>
                     <div style={modalPopupStyle}>
-                        <h2 style={{ textAlign: "center" }}>Menambahkan Buku</h2>
+                        <h2 style={{ fontweight: "bold", fontSize: "24px", marginBottom: "15px" }}>Menambahkan Buku</h2>
 
                         {/* Input fields */}
-                        <div>
+                        <div style={inputContainerStyle}>
                             <label style={labelStyle}>Book ID</label>
                             <input
                                 type="text"
@@ -119,7 +127,7 @@ const AddBookModal = ({ isOpen, onClose, onAddBook }) => {
                             />
                         </div>
 
-                        <div>
+                        <div style={inputContainerStyle}>
                             <label style={labelStyle}>Judul Buku</label>
                             <input
                                 type="text"
@@ -131,7 +139,7 @@ const AddBookModal = ({ isOpen, onClose, onAddBook }) => {
                             />
                         </div>
 
-                        <div>
+                        <div style={inputContainerStyle}>
                             <label style={labelStyle}>Pengarang</label>
                             <input
                                 type="text"
@@ -143,7 +151,7 @@ const AddBookModal = ({ isOpen, onClose, onAddBook }) => {
                             />
                         </div>
 
-                        <div>
+                        <div style={inputContainerStyle}>
                             <label style={labelStyle}>ISBN</label>
                             <input
                                 type="text"
@@ -155,7 +163,7 @@ const AddBookModal = ({ isOpen, onClose, onAddBook }) => {
                             />
                         </div>
 
-                        <div>
+                        <div style={inputContainerStyle}>
                             <label style={labelStyle}>Penerbit</label>
                             <input
                                 type="text"
@@ -167,7 +175,7 @@ const AddBookModal = ({ isOpen, onClose, onAddBook }) => {
                             />
                         </div>
 
-                        <div>
+                        <div style={inputContainerStyle}>
                             <label style={labelStyle}>Tahun Terbit</label>
                             <input
                                 type="text"
@@ -179,7 +187,7 @@ const AddBookModal = ({ isOpen, onClose, onAddBook }) => {
                             />
                         </div>
 
-                        <div>
+                        <div style={inputContainerStyle}>
                             <label style={labelStyle}>Genre</label>
                             <input
                                 type="text"
@@ -191,7 +199,7 @@ const AddBookModal = ({ isOpen, onClose, onAddBook }) => {
                             />
                         </div>
 
-                        <div>
+                        <div style={inputContainerStyle}>
                             <label style={labelStyle}>Harga</label>
                             <input
                                 type="text"
