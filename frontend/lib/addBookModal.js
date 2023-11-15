@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import Button from "@/components/Button";
 import { addBook } from "@/lib/addBook";
 
-const predefinedGenres = ["Fiction", "Non-Fiction", "Sci-Fi", "Mystery", "Fantasy", "Drama"];
+const predefinedGenres = ["Fiksi", "Non Fiksi", "Fiksi Ilmiah", "Misteri", "Fantasi", "Drama", "Horror", "Romansa"];
 
 const modalOverlayStyle = {
     position: "fixed",
@@ -20,7 +20,7 @@ const modalOverlayStyle = {
 const modalPopupStyle = {
     background: "#fff",
     borderRadius: "8px",
-    boxShadow: "0 0 10px rgba(0, 0, 0, 0.2)",
+    boxShadow: "0 0 10px rgba(0, 0, 0, 0.3)",
     maxWidth: "400px",
     width: "100%",
     maxHeight: "70vh", // Set your desired maximum height

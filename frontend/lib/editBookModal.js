@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Button from "@/components/Button";
 import { editBook } from "@/lib/editBook";
 
-const predefinedGenres = ["Fiction", "Non-Fiction", "Sci-Fi", "Mystery", "Fantasy", "Drama"];
+const predefinedGenres = ["Fiksi", "Non Fiksi", "Fiksi Ilmiah", "Misteri", "Fantasi", "Drama", "Horror", "Romansa"];
 
 const modalOverlayStyle = {
     position: "fixed",
