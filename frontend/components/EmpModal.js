@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-export function EmployeeModal({ closeModal, onAdd, onUpdate, defaultValue }) {
+export function EmployeeModal({ closeModal, onAdd, onUpdate, defaultValue,errorText }) {
   const [employee, setEmployee] = useState(defaultValue || {});
 
   const handleChange = (e) => {
@@ -79,6 +79,9 @@ export function EmployeeModal({ closeModal, onAdd, onUpdate, defaultValue }) {
               required
             />
           </div>
+          {errorText && (
+          <span className="text-red-500 font-bold">{errorText}</span>)
+          }
           <div className="flex justify-end">
             <button
               type="button"

@@ -102,7 +102,9 @@ export default function LoginSignup() {
             Masuk
           </button>
         </div>
-        <button className="self-start mt-auto text-black text-xl font-bold font-mplus-bold bg-transparent">
+        <button 
+        onClick = {() => router.push('/')}
+        className="self-start mt-auto text-black text-xl font-bold font-mplus-bold bg-transparent">
           &#60; Kembali
         </button>
       </div>
