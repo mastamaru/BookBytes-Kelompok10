@@ -33,7 +33,7 @@ export default function LoginSignup() {
       if (result.token) {
         // Save the token to localStorage
         localStorage.setItem("token", result.token);
-
+        localStorage.setItem("username", values.username);
         // Assuming the role is also returned in the result object
         // Redirect based on the role
         if (result.role.toLowerCase() === "cashier") {
