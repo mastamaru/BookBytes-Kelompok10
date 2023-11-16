@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import { useRouter } from "next/router";
 
@@ -61,6 +61,12 @@ export default function LoginSignup() {
     }
   };
 
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter") {
+      handleLogin(event);
+    }
+  };
+
   return (
     <section
       className="body bg-[url('/assets/bglogin.png')] relative h-[100vh] bg-cover 
@@ -76,6 +82,7 @@ export default function LoginSignup() {
             <input
               type="nama"
               placeholder="Username"
+              onKeyDown={handleKeyDown}
               onChange={handleInput}
               name="username"
               className="w-96 h-14 px-4 border border-gray-300 rounded-md bg-transparent text-xl "
@@ -84,6 +91,7 @@ export default function LoginSignup() {
           <div className="input flex items-center">
             <input
               type="password"
+              onKeyDown={handleKeyDown}
               placeholder="Kata Sandi"
               onChange={handleInput}
               name="password"
