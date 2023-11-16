@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { useEffect, useState, useContext } from "react";
-import { delEmployees, fetchEmployees } from "@/lib/FunctionEmployee"; 
+import { delEmployees, fetchEmployees } from "@/lib/FunctionEmployee";
 import NavbarAdmin from "@/components/NavbarAdmin";
 import Button from "@/components/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -27,17 +27,18 @@ export default function Karyawan() {
       router.push("/login");
     }
 
-    
     getEmployees();
   }, []);
-  
+
   const handleEditEmployee = (employeeId) => {
-    const selectedEmployee = employees.find((employee) => employee.id === employeeId);
+    const selectedEmployee = employees.find(
+      (employee) => employee.id === employeeId
+    );
     setSelectedEmployee(selectedEmployee);
     setIsModalOpen(true);
   };
-  
-  const handleAddEmployee = async (newEmployee) =>{
+
+  const handleAddEmployee = async (newEmployee) => {
     try {
       const response = await fetch("http://localhost:8000/employee", {
         method: "POST",
@@ -46,34 +47,31 @@ export default function Karyawan() {
         },
         body: JSON.stringify(newEmployee),
       });
-      
+
       if (response.ok) {
         setIsModalOpen(false);
         getEmployees();
-        
-      } 
-      else {
+      } else {
         const errorData = await response.json();
-        setErrorMSG(JSON.stringify(errorData.message))
-        console.log(errorMSG)
-        
+        setErrorMSG(JSON.stringify(errorData.message));
+        console.log(errorMSG);
       }
     } catch (error) {
       console.error("Error creating book:", error);
     }
   };
-  
+
   const closeModal = () => {
-    setErrorMSG("")
+    setErrorMSG("");
     setIsModalOpen(false);
     setSelectedEmployee(null);
   };
-  
+
   // Fungsi untuk menangani proses logout
   const handleLogout = () => {
     // Menghapus token dari localStorage
     localStorage.removeItem("token");
-    
+
     // Redirect ke halaman login
     router.push("/login");
   };
@@ -90,16 +88,14 @@ export default function Karyawan() {
   };
 
   const handleDeleteEmployee = async (employee) => {
-    try{
+    try {
       delEmployees(employee);
-    }
-    catch(error){
+    } catch (error) {
       console.error(error);
     }
     getEmployees();
   };
 
-  
   return (
     <>
       <section className="body bg-[url('/assets/bgbookopen.png')] relative h-[100vh] bg-cover">
@@ -128,7 +124,7 @@ export default function Karyawan() {
               />
 
               <div
-                className="table-container mt-5 max-h-[60vh] overflow-auto"
+                className="table-container mt-5 max-h-[45vh] overflow-auto"
                 style={{ maxWidth: "1100px", marginLeft: "100px" }}
               >
                 <table style={{ tableLayout: "fixed", width: "100%" }}>
@@ -191,8 +187,7 @@ export default function Karyawan() {
             onAdd={handleAddEmployee}
             onUpdate={handleEditEmployee}
             defaultValue={selectedEmployee}
-            errorText = {errorMSG}
-
+            errorText={errorMSG}
           />
         )}
         <Button
@@ -202,8 +197,6 @@ export default function Karyawan() {
           color="red"
           className="flex py-[15px] px-5 text-[24px] items-center gap-2 absolute bottom-[5%] left-[1%]"
         />
-
-
       </section>
     </>
   );
