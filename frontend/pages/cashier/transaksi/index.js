@@ -1,27 +1,57 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { fetchEmployees } from "@/lib/FunctionEmployee";
+import { useRouter } from "next/router";
 import moment from "moment";
 import "moment-timezone";
+import AddRowModal from "@/lib/addRowModal";
 import NavbarAdmin from "@/components/NavbarAdmin";
 import Button from "@/components/Button";
 import { data } from "autoprefixer";
+import { fetchTransactions } from "@/lib/getTransaction";
 export default function Kasir() {
   const [employees, setTransactions] = useState([]);
-
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const router = useRouter();
   useEffect(() => {
+    //add token validation to check user session
+    const token = localStorage.getItem("token");
+
+    const isTokenValid = () => {
+      return token != null;
+    };
+
+    if (!isTokenValid()) {  
+      router.push("/login");
+    }
+
     const getTransaction = async () => {
       try {
         const data = await fetchEmployees();
-        console.log("Fetched Transactions:", data); // Menampilkan data ke console
+        console.log("Fetched Transactions:", data);
         setTransactions(data);
       } catch (error) {
         console.error(error);
       }
     };
 
-    getTransaction(); // Memanggil fungsi getTransaction saat komponen dimuat
-  }, []); // Menambahkan array kosong sebagai dependency agar useEffect hanya berjalan sekali saat komponen dimuat
+    getTransaction();
+  }, []);
+
+  const [rows, setRows] = useState([]);
+
+  const handleAddRow = (newRow) => {
+    setRows([...rows, newRow]);
+  };
+
+  // Fungsi untuk menangani proses logout
+  const handleLogout = () => {
+    // Menghapus token dari localStorage
+    localStorage.removeItem("token");
+
+    // Redirect ke halaman login
+    router.push("/login");
+  };
 
   return (
     <>
@@ -56,9 +86,33 @@ export default function Kasir() {
                   </tr>
                 </thead>
                 <tbody>
-                  
+                  {rows.map((row, index) => (
+                    <tr key={index}>
+                      <td>{row.idTransaction}</td>
+                      <td>{row.title}</td>
+                      <td>{row.quantity}</td>
+                      <td>{row.price}</td>
+                      <td>{row.quantity * row.price}</td>
+                    </tr>
+                  ))}
                 </tbody>
               </table>
+              <Button
+                color={"blue"}
+                text={"+ Tambah Baris"}
+                className="py-2 px-4 text-[24px] items-center relative top-[100px] left-[70%]"
+                onClick={() => setIsAddModalOpen(true)}
+              />
+              <AddRowModal
+                isOpen={isAddModalOpen}
+                onAddRow={handleAddRow}
+                onClose={() => setIsAddModalOpen(false)}
+              />
+              <Button
+                color={"green"}
+                text={"> Bayar"}
+                className="py-2 px-4 text-[24px] items-center relative top-[100px] left-[75%]"
+              />
             </div>
           </div>
         </div> 
@@ -72,6 +126,7 @@ export default function Kasir() {
                 ))}
             </h1>
             <Button
+              onClick={handleLogout}
                 icon={"/assets/signout.svg"}
                 text={"Keluar"}
                 color="red"
