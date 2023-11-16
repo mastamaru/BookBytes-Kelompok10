@@ -39,6 +39,8 @@ export default function LoginSignup() {
         if (result.role.toLowerCase() === "cashier") {
           console.log("Login Success: Cashier");
           SetMSG("Login Success: Cashier");
+          router.push("cashier/transaksi")
+          
           // Redirect to cashier's page if needed
         } else if (result.role.toLowerCase() === "admin") {
           console.log("Login Success: Admin");
@@ -102,7 +104,9 @@ export default function LoginSignup() {
             Masuk
           </button>
         </div>
-        <button className="self-start mt-auto text-black text-xl font-bold font-mplus-bold bg-transparent">
+        <button 
+        onClick = {() => router.push('/')}
+        className="self-start mt-auto text-black text-xl font-bold font-mplus-bold bg-transparent">
           &#60; Kembali
         </button>
       </div>

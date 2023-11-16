@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { delEmployees, fetchEmployees } from "@/lib/FunctionEmployee"; 
 import NavbarAdmin from "@/components/NavbarAdmin";
 import Button from "@/components/Button";
@@ -12,6 +12,7 @@ export default function Karyawan() {
   const [employees, setEmployees] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedEmployee, setSelectedEmployee] = useState(null);
+  const [errorMSG, setErrorMSG] = useState([]);
   const router = useRouter();
 
   useEffect(() => {
@@ -53,14 +54,17 @@ export default function Karyawan() {
       } 
       else {
         const errorData = await response.json();
+        setErrorMSG(JSON.stringify(errorData.message))
+        console.log(errorMSG)
+        
       }
     } catch (error) {
       console.error("Error creating book:", error);
     }
   };
   
-  // Function to handle closing the modal
   const closeModal = () => {
+    setErrorMSG("")
     setIsModalOpen(false);
     setSelectedEmployee(null);
   };
@@ -94,6 +98,7 @@ export default function Karyawan() {
     }
     getEmployees();
   };
+
   
   return (
     <>
@@ -186,6 +191,8 @@ export default function Karyawan() {
             onAdd={handleAddEmployee}
             onUpdate={handleEditEmployee}
             defaultValue={selectedEmployee}
+            errorText = {errorMSG}
+
           />
         )}
         <Button
