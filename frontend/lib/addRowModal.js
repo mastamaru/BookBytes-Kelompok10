@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import Button from "@/components/Button";
+import { fetchBooks } from "./getBook";
 
 const modalOverlayStyle = {
     position: "fixed",
@@ -70,6 +71,25 @@ const inputStyle = {
 };
 
 const AddRowModal = ({ isOpen, onClose, onAddRow }) => {
+    const [books, setBooks] = useState([]);
+
+    useEffect(() => {
+        const fetchBook = async () => {
+            try {
+                const bookData = await fetchBooks();
+                setBooks(bookData);
+            } catch (error) {
+                console.error("Error fetching books:", error);
+                // Handle error (e.g., show an error message to the user)
+            }
+        };
+
+        if (isOpen) {
+            fetchBook();
+        }
+    }, [isOpen]);
+
+
     const [newRow, setNewRow] = useState({
         idTransaction: "",
         title: "",
@@ -77,6 +97,17 @@ const AddRowModal = ({ isOpen, onClose, onAddRow }) => {
         price: "",
         totalPrice: ""
     });
+
+    const handleTitleChange = (e) => {
+        const selectedTitle = e.target.value;
+        const selectedBook = books.find((book) => book.title === selectedTitle);
+
+        setNewRow({
+            ...newRow,
+            title: selectedTitle,
+            price: selectedBook ? selectedBook.price : "", // Set the price based on the selected title
+        });
+    };
 
     const handleAddRow = () => {
         try {
@@ -116,15 +147,20 @@ const AddRowModal = ({ isOpen, onClose, onAddRow }) => {
                         </div>
 
                         <div style={inputContainerStyle}>
-                            <label style={labelStyle}>Judul Buku</label>
-                            <input
-                                type="text"
-                                value={newRow.title}
-                                onChange={(e) =>
-                                    setNewRow({ ...newRow, title: e.target.value })
-                                }
+                            <select
+                                value={books.title}
+                                onChange={handleTitleChange}
                                 style={inputStyle}
-                            />
+                            >
+                                <option value="" disabled>
+                                    Select a book
+                                </option>
+                                {books.map((book) => (
+                                    <option key={book.bookID} value={book.title}>
+                                        {book.title}
+                                    </option>
+                                ))}
+                            </select>
                         </div>
 
                         <div style={inputContainerStyle}>
@@ -134,18 +170,6 @@ const AddRowModal = ({ isOpen, onClose, onAddRow }) => {
                                 value={newRow.quantity}
                                 onChange={(e) =>
                                     setNewRow({ ...newRow, quantity: e.target.value })
-                                }
-                                style={inputStyle}
-                            />
-                        </div>
-
-                        <div style={inputContainerStyle}>
-                            <label style={labelStyle}>Harga Satuan</label>
-                            <input
-                                type="number"
-                                value={newRow.price}
-                                onChange={(e) =>
-                                    setNewRow({ ...newRow, price: e.target.value })
                                 }
                                 style={inputStyle}
                             />
