@@ -73,7 +73,7 @@ export default function Transaksi() {
             <h1 className="font-mplus font-medium text-[65px]">
               Data Transaksi
             </h1>
-            <div className="table-container mt-12 max-h-[60vh] overflow-hidden">
+            <div className="table-container mt-12 max-h-[48vh] overflow-hidden">
               <table>
                 <thead>
                   <tr>
