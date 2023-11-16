@@ -16,32 +16,22 @@ export default function Kasir() {
   const [employees, setEmployees] = useState([]);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [userName, setUserName] = useState("");
   const router = useRouter();
   var ind;
 
   useEffect(() => {
     // Add token validation to check the user session
     const token = localStorage.getItem("token");
-
+    const username = localStorage.getItem("username");
     const isTokenValid = () => {
+      setUserName(username);
       return token != null;
     };
 
     if (!isTokenValid()) {
       router.push("/login");
     }
-
-    const getEmployees = async () => {
-      try {
-        const data = await fetchEmployees();
-        console.log("Fetched Employees:", data);
-        setEmployees(data);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
-    getEmployees();
   }, []);
 
   const [rows, setRows] = useState([]);
@@ -157,9 +147,7 @@ export default function Kasir() {
         <div className="flex flex-row items-end gap-6 absolute top-[11%] left-[67.5%] leading-normal font-mplus font-bold text-[35px]">
           <h1>Kasir:</h1>
           <h1 className="text-[#1820EF]">
-            {employees.map((employee) => (
-              <span key={employee.id}>{employee.name}</span>
-            ))}
+            {username}
           </h1>
           <Button
             onClick={handleLogout}
