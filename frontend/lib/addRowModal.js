@@ -147,6 +147,7 @@ const AddRowModal = ({ isOpen, onClose, onAddRow }) => {
                         </div>
 
                         <div style={inputContainerStyle}>
+                            <label>Judul Buku</label>
                             <select
                                 value={books.title}
                                 onChange={handleTitleChange}
