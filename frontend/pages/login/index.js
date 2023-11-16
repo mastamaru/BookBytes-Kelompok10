@@ -39,6 +39,8 @@ export default function LoginSignup() {
         if (result.role.toLowerCase() === "cashier") {
           console.log("Login Success: Cashier");
           SetMSG("Login Success: Cashier");
+          router.push("cashier/transaksi")
+          
           // Redirect to cashier's page if needed
         } else if (result.role.toLowerCase() === "admin") {
           console.log("Login Success: Admin");

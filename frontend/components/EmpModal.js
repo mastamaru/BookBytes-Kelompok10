@@ -82,7 +82,7 @@ export function EmployeeModal({ closeModal, onAdd, onUpdate, defaultValue,errorT
           {errorText && (
           <span className="text-red-500 font-bold">{errorText}</span>)
           }
-          <div className="flex justify-end">
+          <div className="flex justify-end pt-2">
             <button
               type="button"
               onClick={closeModal}
