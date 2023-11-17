@@ -147,7 +147,7 @@ export default function Kasir() {
         <div className="flex flex-row items-end gap-6 absolute top-[11%] left-[67.5%] leading-normal font-mplus font-bold text-[35px]">
           <h1>Kasir:</h1>
           <h1 className="text-[#1820EF]">
-            {username}
+            {userName}
           </h1>
           <Button
             onClick={handleLogout}
