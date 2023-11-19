@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Head from "next/head";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { fetchBooks } from "@/lib/getBook";
@@ -57,14 +58,14 @@ export default function Buku() {
     const bookToEdit = books.find((book) => book.bookID === bookId);
     setSelectedBookId(bookToEdit);
     setIsEditModalOpen(true);
-  }
+  };
 
   const handleEditBook = async () => {
     const updatedBooks = await fetchBooks();
     setBooks(updatedBooks);
 
     setIsEditModalOpen(false);
-  }
+  };
 
   const confirmDeleteBook = async () => {
     try {
@@ -89,6 +90,9 @@ export default function Buku() {
 
   return (
     <>
+      <Head>
+        <title>Admin - Data Buku</title>
+      </Head>
       <section className="body bg-[url('/assets/bgbookopen.png')] relative h-[100vh] bg-cover">
         <Image
           src={"/assets/logo.png"}
@@ -100,7 +104,7 @@ export default function Buku() {
         <div className="pt-[260px] relative">
           <NavbarAdmin
             selectedLabel="Data Buku"
-            className="left-[22%] top-[7%]"
+            className="left-[22%] top-[7.16%]"
           />
           <div className="w-[1200px] mx-auto">
             <div className="flex flex-col items-center ">
@@ -154,7 +158,9 @@ export default function Buku() {
                             width: "100%",
                           }}
                         >
-                          <button onClick={() => handleEditBookClick(book.bookID)}>
+                          <button
+                            onClick={() => handleEditBookClick(book.bookID)}
+                          >
                             <FontAwesomeIcon
                               icon={faEdit}
                               style={{ color: "blue" }}
