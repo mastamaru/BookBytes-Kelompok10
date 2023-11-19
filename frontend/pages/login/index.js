@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import { useRouter } from "next/router";
+import Head from "next/head";
 
 export default function LoginSignup() {
   const router = useRouter();
@@ -71,6 +72,9 @@ export default function LoginSignup() {
 
   return (
     <>
+      <Head>
+        <title>BookByte - Login</title>
+      </Head>
       <section
         className="body bg-[url('/assets/bglogin.png')] relative h-[100vh] bg-cover 
       flex flex-col items-center justify-center"
