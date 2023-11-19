@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Head from "next/head";
 import { useEffect, useState } from "react";
 import NavbarAdmin from "@/components/NavbarAdmin";
 import Button from "@/components/Button";
@@ -6,6 +7,9 @@ import Link from "next/link";
 export default function () {
   return (
     <>
+      <Head>
+        <title>BookByte - Index</title>
+      </Head>
       <section className="body bg-[url('/assets/bgwelcome.png')] relative h-[100vh] bg-cover">
         <Image
           src={"/assets/logo.png"}
