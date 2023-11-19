@@ -11,6 +11,7 @@ import { fetchTransactions } from "@/lib/getTransaction";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
 import DeleteRowModal from "@/lib/delRowModal";
+import Head from "next/head";
 
 export default function Kasir() {
   const [employees, setEmployees] = useState([]);
@@ -68,6 +69,9 @@ export default function Kasir() {
 
   return (
     <>
+      <Head>
+        <title>Kasir - Input Transaksi</title>
+      </Head>
       <section className="body">
         <Image
           src={"/assets/logo.png"}
@@ -146,9 +150,7 @@ export default function Kasir() {
         />
         <div className="flex flex-row items-end gap-6 absolute top-[11%] left-[67.5%] leading-normal font-mplus font-bold text-[35px]">
           <h1>Kasir:</h1>
-          <h1 className="text-[#1820EF]">
-            {userName}
-          </h1>
+          <h1 className="text-[#1820EF]">{userName}</h1>
           <Button
             onClick={handleLogout}
             icon={"/assets/signout.svg"}
