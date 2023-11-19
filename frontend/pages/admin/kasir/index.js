@@ -7,6 +7,7 @@ import Button from "@/components/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { EmployeeModal } from "@/components/EmpModal";
+import Head from "next/head";
 
 export default function Karyawan() {
   const [employees, setEmployees] = useState([]);
@@ -98,6 +99,9 @@ export default function Karyawan() {
 
   return (
     <>
+      <Head>
+        <title>Admin - Data Kasir</title>
+      </Head>
       <section className="body bg-[url('/assets/bgbookopen.png')] relative h-[100vh] bg-cover">
         <Image
           src="/assets/logo.png"
