@@ -6,6 +6,7 @@ import moment from "moment";
 import "moment-timezone";
 import NavbarAdmin from "@/components/NavbarAdmin";
 import Button from "@/components/Button";
+import Head from "next/head";
 export default function Transaksi() {
   const [transactions, setTransactions] = useState([]);
   const router = useRouter();
@@ -45,6 +46,9 @@ export default function Transaksi() {
 
   return (
     <>
+      <Head>
+        <title>Admin - Data Transaksi</title>
+      </Head>
       <section className="body bg-[url('/assets/bgbookopen.png')] relative h-[100vh] bg-cover">
         <Image
           src={"/assets/logo.png"}
