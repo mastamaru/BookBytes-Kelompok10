@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import Button from "@/components/Button";
 import { fetchBooks } from "./getBook";
+import { getNextTransactionId } from "./getTransaction";
 
 const modalOverlayStyle = {
     position: "fixed",
@@ -72,12 +73,15 @@ const inputStyle = {
 
 const AddRowModal = ({ isOpen, onClose, onAddRow }) => {
     const [books, setBooks] = useState([]);
+    const [nextId, setNextId] = useState("");
 
     useEffect(() => {
         const fetchBook = async () => {
             try {
                 const bookData = await fetchBooks();
                 setBooks(bookData);
+                const id = await getNextTransactionId();
+                setNextId(id);
             } catch (error) {
                 console.error("Error fetching books:", error);
                 // Handle error (e.g., show an error message to the user)
@@ -113,7 +117,7 @@ const AddRowModal = ({ isOpen, onClose, onAddRow }) => {
         try {
             onAddRow(newRow)
             setNewRow({
-                idTransaction: newRow.idTransaction,
+                idTransaction: nextId,
                 title: newRow.title,
                 quantity: newRow.quantity,
                 price: newRow.price,
@@ -132,19 +136,6 @@ const AddRowModal = ({ isOpen, onClose, onAddRow }) => {
                 <div style={modalOverlayStyle}>
                     <div style={modalPopupStyle}>
                         <h2 style={{ fontweight: "bold", fontSize: "24px", marginBottom: "15px" }}>Menambahkan Baris</h2>
-
-                        {/* Input fields */}
-                        <div style={inputContainerStyle}>
-                            <label style={labelStyle}>ID Transaksi</label>
-                            <input
-                                type="text"
-                                value={newRow.idTransaction}
-                                onChange={(e) =>
-                                    setNewRow({ ...newRow, idTransaction: e.target.value })
-                                }
-                                style={inputStyle}
-                            />
-                        </div>
 
                         <div style={inputContainerStyle}>
                             <label>Judul Buku</label>
