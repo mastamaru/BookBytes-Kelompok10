@@ -1,3 +1,5 @@
+import next from "next";
+
 const API_URL = "http://localhost:8000";
 
 export const fetchTransactions = async () => {
@@ -34,5 +36,20 @@ export const fetchTransactions = async () => {
   } catch (error) {
     console.error("Error fetching data:", error);
     throw error;
+  }
+};
+
+export const getNextTransactionId = async () => {
+  try {
+      // Fetch transactions to get the count
+      const transactions = await fetchTransactions();
+
+      // Calculate the next ID based on the count
+      const nextId = `TRX${transactions.length + 1}`;
+
+      return nextId;
+  } catch (error) {
+      console.error("Error getting next transaction ID:", error);
+      throw error;
   }
 };
