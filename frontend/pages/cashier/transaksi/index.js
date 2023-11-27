@@ -1,6 +1,5 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import { fetchEmployees } from "@/lib/FunctionEmployee";
 import { useRouter } from "next/router";
 import moment from "moment";
 import "moment-timezone";
@@ -11,38 +10,90 @@ import { fetchTransactions } from "@/lib/getTransaction";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
 import DeleteRowModal from "@/lib/delRowModal";
+import AddTransactionModal from "@/lib/addTransactionModal";
 import Head from "next/head";
+import { fetchBooks } from "@/lib/getBook";
+import { fetchEmployees } from "@/lib/getEmployee";
 
 export default function Kasir() {
-  const [employees, setEmployees] = useState([]);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [isTransactionModalOpen, setIsTransactionModalOpen] = useState(false);
   const [userName, setUserName] = useState("");
+  const [employees, setEmployees] = useState([]); 
+  const [employeeId, setEmployeeId] = useState(null); 
+  const [transactionId, setTransactionID] = useState("");
+  const [rows, setRows] = useState([]);
+  const [books, setBooks] = useState([]);
   const router = useRouter();
   var ind;
 
   useEffect(() => {
-    // Add token validation to check the user session
     const token = localStorage.getItem("token");
     const username = localStorage.getItem("username");
+
     const isTokenValid = () => {
       setUserName(username);
       return token != null;
     };
 
-    if (!isTokenValid()) {
-      router.push("/login");
+    const fetchData = async () => {
+      try {
+        if (!isTokenValid()) {
+          router.push("/login");
+          return;
+        }
+
+        const employeesData = await fetchEmployees();
+        setEmployees(employeesData);
+        const employee = employeesData.find((emp) => emp.username === username);
+        setEmployeeId(employee ? employee.id : null);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+        // Handle error (e.g., show an error message to the user)
+      }
+    };
+
+    fetchData();
+  }, [router, userName]);
+
+  const fetchBookIdByTitle = async (title) => {
+    try {
+      const booksData = await fetchBooks();
+      const book = booksData.find((bk) => bk.title === title);
+      return book ? book.bookID : null;
+    } catch (error) {
+      console.error("Error fetching books data:", error);
+      return null;
     }
-  }, []);
+  };
 
-  const [rows, setRows] = useState([]);
-
-  const handleAddRow = (newRow) => {
-    setRows([...rows, newRow]);
+  const handleAddRow = async (newRow) => {
+    try {
+      const bookID = await fetchBookIdByTitle(newRow.title);
+      setTransactionID(newRow.idTransaction);
+      console.log("newRow:", newRow);
+      console.log("bookID:", bookID);
+      console.log("employeeId:", employeeId);
+      // Ensure both bookID and employeeId are available
+      if (bookID !== null && employeeId !== null) {
+        setRows([...rows, newRow]);
+        setBooks([...books, { bookID, quantity: newRow.quantity }]);
+      } 
+      else {
+        console.error("Error adding row: bookID is null");
+      }
+    } catch (error) {
+      console.error("Error handling add row:", error);
+    }
   };
 
   const handleDeleteRow = () => {
     setIsDeleteModalOpen(true);
+  };
+
+  const handleTransaction = () => {
+    setIsTransactionModalOpen(true);
   };
 
   const confirmDeleteRow = (index) => {
@@ -67,6 +118,14 @@ export default function Kasir() {
     router.push("/login");
   };
 
+  const calculateTotalPrice = () => {
+    return rows.reduce((total, row) => {
+      // Calculate the price for each row and add it to the total
+      const rowTotalPrice = row.quantity * row.price;
+      return total + rowTotalPrice;
+    }, 0);
+  };
+  const total = calculateTotalPrice();
   return (
     <>
       <Head>
@@ -138,6 +197,16 @@ export default function Kasir() {
                 color={"green"}
                 text={"> Bayar"}
                 className="py-2 px-4 text-[24px] items-center relative top-[100px] left-[75%]"
+                onClick={() => setIsTransactionModalOpen(true)}
+              />
+              <AddTransactionModal
+                isOpen={isTransactionModalOpen}
+                onClose={() => setIsTransactionModalOpen(false)}
+                books={books}
+                transactionID={transactionId}
+                employeeID={employeeId}
+                totalPrice={total}
+                onAddRow={handleTransaction}
               />
             </div>
           </div>
