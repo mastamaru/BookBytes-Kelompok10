@@ -101,8 +101,11 @@ export default function Kasir() {
     try {
       // Perform the deletion logic here, using the provided index
       const updatedRows = [...rows];
+      const updatedBooks = [...books];
       updatedRows.splice(index, 1); // Remove the row at the specified index
+      updatedBooks.splice(index, 1);
       setRows(updatedRows);
+      setBooks(updatedBooks);
       setIsDeleteModalOpen(false);
     } catch (error) {
       console.error("Error deleting row", error);
