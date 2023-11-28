@@ -20,8 +20,8 @@ export default function Kasir() {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isTransactionModalOpen, setIsTransactionModalOpen] = useState(false);
   const [userName, setUserName] = useState("");
-  const [employees, setEmployees] = useState([]); 
-  const [employeeId, setEmployeeId] = useState(null); 
+  const [employees, setEmployees] = useState([]);
+  const [employeeId, setEmployeeId] = useState(null);
   const [transactionId, setTransactionID] = useState("");
   const [rows, setRows] = useState([]);
   const [books, setBooks] = useState([]);
@@ -79,8 +79,7 @@ export default function Kasir() {
       if (bookID !== null && employeeId !== null) {
         setRows([...rows, newRow]);
         setBooks([...books, { bookID, quantity: newRow.quantity }]);
-      } 
-      else {
+      } else {
         console.error("Error adding row: bookID is null");
       }
     } catch (error) {
@@ -142,9 +141,9 @@ export default function Kasir() {
           className="absolute left-[8.5%] top-[10%]"
           alt="logo"
         />
-        <div className="flex flex-row items-end gap-10 absolute top-[0] left-[35%] leading-normal font-mplus font-bold text-[35px]">
+        <div className="flex flex-row items-end gap-10 absolute top-[0] left-[40%] leading-normal font-mplus font-bold text-[35px]">
           <div
-            className="rounded-[15px] px-[92px] py-6 bg-[#FBB91C] mx-auto"
+            className="rounded-[24px] px-[92px] py-8 bg-[#FBB91C] mx-auto "
             alt="transaksi"
           >
             Transaksi
