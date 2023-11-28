@@ -24,16 +24,28 @@ const employeeSchema = new mongoose.Schema({
   },
 });
 
-// Middleware pre-save untuk mengatur increment ID
 employeeSchema.pre("save", async function (next) {
   if (this.isNew) {
-    // Hanya berjalan saat dokumen baru dibuat
-    const lastEmployee = await this.constructor.findOne().sort({ id: -1 }); // Dapatkan karyawan dengan ID terbesar
+    let prefix;
+    switch (this.role.toLowerCase()) {
+      case "admin":
+        prefix = "A";
+        break;
+      case "cashier":
+        prefix = "C";
+        break;
+    }
+
+    const regex = new RegExp("^" + prefix + "\\d+$");
+    const lastEmployee = await this.constructor
+      .findOne({ id: { $regex: regex } })
+      .sort({ id: -1 });
+
     if (lastEmployee) {
-      const lastEmployeeIdNumber = parseInt(lastEmployee.id.substring(1)); // Dapatkan angka dari ID karyawan (abaikan huruf C)
-      this.id = "C" + (lastEmployeeIdNumber + 1); // Buat ID baru dengan menambahkan 1 ke ID sebelumnya
+      const lastEmployeeIdNumber = parseInt(lastEmployee.id.substring(1));
+      this.id = prefix + (lastEmployeeIdNumber + 1);
     } else {
-      this.id = "C1"; // Jika belum ada karyawan, set ID ke C1
+      this.id = prefix + "1";
     }
   }
   next();
