@@ -1,6 +1,12 @@
 import React, { useState } from "react";
 
-export function EmployeeModal({ closeModal, onAdd, onUpdate, defaultValue,errorText }) {
+export function EmployeeModal({
+  closeModal,
+  onAdd,
+  onUpdate,
+  defaultValue,
+  errorText,
+}) {
   const [employee, setEmployee] = useState(defaultValue || {});
 
   const handleChange = (e) => {
@@ -18,13 +24,26 @@ export function EmployeeModal({ closeModal, onAdd, onUpdate, defaultValue,errorT
     }
   };
 
+  const inputStyle = {
+    width: "100%", // Set to your desired width
+    padding: "10px",
+    borderRadius: "8px",
+    boxSizing: "border-box",
+    border: "1px solid #ccc",
+  };
+
   return (
     <div className="fixed inset-0 flex items-center justify-center">
       <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
-        <h2 className="text-lg font-bold mb-4">{defaultValue ? "Edit Employee" : "Add Employee"}</h2>
+        <h2 className="text-lg font-bold mb-4">
+          {defaultValue ? "Edit Employee" : "Add Employee"}
+        </h2>
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="name">
+            <label
+              className="block text-gray-700 text-sm font-bold mb-2"
+              htmlFor="name"
+            >
               Nama
             </label>
             <input
@@ -38,21 +57,34 @@ export function EmployeeModal({ closeModal, onAdd, onUpdate, defaultValue,errorT
             />
           </div>
           <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="role">
+            <label
+              className="block text-gray-700 text-sm font-bold mb-2"
+              htmlFor="role"
+            >
               Role
             </label>
-            <input
+            <select
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               id="role"
-              type="text"
               name="role"
               value={employee.role || ""}
               onChange={handleChange}
               required
-            />
+              style={inputStyle}
+              disabled={defaultValue ? true : false}
+            >
+              <option value="" disabled>
+                Pilih Role
+              </option>
+              <option value="Admin">Admin</option>
+              <option value="Cashier">Cashier</option>
+            </select>
           </div>
           <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="username">
+            <label
+              className="block text-gray-700 text-sm font-bold mb-2"
+              htmlFor="username"
+            >
               Username
             </label>
             <input
@@ -66,7 +98,10 @@ export function EmployeeModal({ closeModal, onAdd, onUpdate, defaultValue,errorT
             />
           </div>
           <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="username">
+            <label
+              className="block text-gray-700 text-sm font-bold mb-2"
+              htmlFor="username"
+            >
               Password
             </label>
             <input
@@ -80,8 +115,8 @@ export function EmployeeModal({ closeModal, onAdd, onUpdate, defaultValue,errorT
             />
           </div>
           {errorText && (
-          <span className="text-red-500 font-bold">{errorText}</span>)
-          }
+            <span className="text-red-500 font-bold">{errorText}</span>
+          )}
           <div className="flex justify-end pt-2">
             <button
               type="button"
