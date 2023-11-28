@@ -57,6 +57,10 @@ export default function Transaksi() {
           className="absolute left-[2.5%] top-[3%]"
           alt="logo"
         />
+        <NavbarAdmin
+          selectedLabel="Data Transaksi"
+          className="top-[7%] left-[22%]"
+        />
         <div className="pt-[260px] relative">
           {/* <div className="flex flex-row items-end gap-6 absolute top-[10.6%] left-[22%] leading-normal font-mplus font-bold text-[35px]">
             <button className="rounded-[5px] px-[92px] py-2.5 bg-[#7AC2A5]">
@@ -69,10 +73,7 @@ export default function Transaksi() {
               Data Kasir
             </button>
           </div> */}
-          <NavbarAdmin
-            selectedLabel="Data Transaksi"
-            className="top-[7.55%] left-[22%]"
-          />
+
           <div className="flex flex-col items-center ">
             <h1 className="font-mplus font-medium text-[65px]">
               Data Transaksi
