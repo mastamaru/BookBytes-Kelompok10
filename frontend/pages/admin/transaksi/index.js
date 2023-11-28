@@ -71,13 +71,13 @@ export default function Transaksi() {
           </div> */}
           <NavbarAdmin
             selectedLabel="Data Transaksi"
-            className="top-[7.9%] left-[22%]"
+            className="top-[7.55%] left-[22%]"
           />
           <div className="flex flex-col items-center ">
             <h1 className="font-mplus font-medium text-[65px]">
               Data Transaksi
             </h1>
-            <div className="table-container mt-12 max-h-[48vh] overflow-hidden">
+            <div className="table-container mt-12 max-h-[48vh] overflow-y-scroll">
               <table>
                 <thead>
                   <tr>
