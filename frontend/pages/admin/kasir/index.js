@@ -84,7 +84,7 @@ export default function Karyawan() {
     try {
       const data = await fetchEmployees();
       console.log("Fetched Employees:", data);
-      setEmployees(data);
+      // setEmployees(data);
       console.log(employees);
     } catch (error) {
       console.error(error);
@@ -113,11 +113,11 @@ export default function Karyawan() {
           className="absolute left-[2.5%] top-[3%]"
           alt="logo"
         />
+        <NavbarAdmin
+          selectedLabel="Data Kasir"
+          className="top-[7.03%] left-[22%] z-[9999]"
+        />
         <div className="pt-[260px] relative">
-          <NavbarAdmin
-            selectedLabel="Data Kasir"
-            className="top-[7.2%] left-[22%]"
-          />
           <div className="w-[1200px] mx-auto">
             <div className="flex flex-col items-center">
               <h1 className="font-mplus font-bold text-[65px] pt-3 pb-10">
