@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:8000";
+const API_URL = "https://book-bytes-kelompok10.vercel.app";
 
 export const fetchEmployees = async () => {
   try {
