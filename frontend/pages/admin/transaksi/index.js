@@ -54,12 +54,12 @@ export default function Transaksi() {
           src={"/assets/logo.png"}
           width={250}
           height={100}
-          className="absolute left-[2.5%] top-[3%]"
+          className="absolute left-[2.5%] top-[3%] "
           alt="logo"
         />
         <NavbarAdmin
           selectedLabel="Data Transaksi"
-          className="top-[7%] left-[22%]"
+          className="top-[7%] left-[22%] z-[9999]"
         />
         <div className="pt-[260px] relative">
           {/* <div className="flex flex-row items-end gap-6 absolute top-[10.6%] left-[22%] leading-normal font-mplus font-bold text-[35px]">
