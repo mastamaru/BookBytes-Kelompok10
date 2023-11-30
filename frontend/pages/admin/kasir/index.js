@@ -41,13 +41,16 @@ export default function Karyawan() {
 
   const handleAddEmployee = async (newEmployee) => {
     try {
-      const response = await fetch("http://localhost:8000/employee", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(newEmployee),
-      });
+      const response = await fetch(
+        "https://book-bytes-kelompok10.vercel.app/employee",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(newEmployee),
+        }
+      );
 
       if (response.ok) {
         setIsModalOpen(false);
