@@ -34,7 +34,7 @@ export default function Buku() {
       try {
         const data = await fetchBooks();
         console.log("Fetched Books:", data);
-        // setBooks(data);
+        setBooks(data);
       } catch (error) {
         console.error(error);
       }
