@@ -84,7 +84,7 @@ export default function Karyawan() {
     try {
       const data = await fetchEmployees();
       console.log("Fetched Employees:", data);
-      // setEmployees(data);
+      setEmployees(data);
       console.log(employees);
     } catch (error) {
       console.error(error);
