@@ -34,7 +34,7 @@ export default function Buku() {
       try {
         const data = await fetchBooks();
         console.log("Fetched Books:", data);
-        setBooks(data);
+        // setBooks(data);
       } catch (error) {
         console.error(error);
       }
@@ -101,11 +101,11 @@ export default function Buku() {
           className="absolute left-[2.5%] top-[3%]"
           alt="logo"
         />
+        <NavbarAdmin
+          selectedLabel="Data Buku"
+          className="left-[22%] top-[7%] z-[9999]"
+        />
         <div className="pt-[260px] relative">
-          <NavbarAdmin
-            selectedLabel="Data Buku"
-            className="left-[22%] top-[7.16%]"
-          />
           <div className="w-[1200px] mx-auto">
             <div className="flex flex-col items-center ">
               <h1 className="font-mplus font-medium text-[65px] ">Data Buku</h1>
