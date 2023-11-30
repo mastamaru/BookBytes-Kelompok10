@@ -22,13 +22,16 @@ export default function LoginSignup() {
     event.preventDefault();
 
     try {
-      const response = await fetch("http://localhost:8000/employee/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(values),
-      });
+      const response = await fetch(
+        "https://book-bytes-kelompok10.vercel.app/employee/login",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(values),
+        }
+      );
 
       const result = await response.json();
       if (result.token) {
