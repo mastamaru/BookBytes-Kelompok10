@@ -33,7 +33,7 @@ export default function Transaksi() {
     };
 
     getTransaction(); // Memanggil fungsi getTransaction saat komponen dimuat
-  }, []); // Menambahkan array kosong sebagai dependency agar useEffect hanya berjalan sekali saat komponen dimuat
+  }, [router]); // Menambahkan array kosong sebagai dependency agar useEffect hanya berjalan sekali saat komponen dimuat
 
   // Fungsi untuk menangani proses logout
   const handleLogout = () => {

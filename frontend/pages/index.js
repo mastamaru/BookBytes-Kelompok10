@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import NavbarAdmin from "@/components/NavbarAdmin";
 import Button from "@/components/Button";
 import Link from "next/link";
-export default function () {
+export default function Home() {
   return (
     <>
       <Head>
@@ -12,7 +12,7 @@ export default function () {
       </Head>
       <section className="body bg-[url('/assets/bgwelcome.png')] relative h-[100vh] bg-cover">
         <Image
-          src={"/assets/logo.png"}
+          src="/assets/logo.png"
           width={250}
           height={100}
           className="absolute left-[3%] top-[20%]"

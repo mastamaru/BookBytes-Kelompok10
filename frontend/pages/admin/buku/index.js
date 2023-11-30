@@ -41,7 +41,7 @@ export default function Buku() {
     };
 
     getBook();
-  }, []);
+  }, [router]);
 
   const handleAddBook = async () => {
     // Refetch books after adding a new book
