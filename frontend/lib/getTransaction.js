@@ -1,6 +1,6 @@
 import next from "next";
 
-const API_URL = "http://localhost:8000";
+const API_URL = "https://book-bytes-kelompok10.vercel.app";
 
 export const fetchTransactions = async () => {
   try {
@@ -41,15 +41,15 @@ export const fetchTransactions = async () => {
 
 export const getNextTransactionId = async () => {
   try {
-      // Fetch transactions to get the count
-      const transactions = await fetchTransactions();
+    // Fetch transactions to get the count
+    const transactions = await fetchTransactions();
 
-      // Calculate the next ID based on the count
-      const nextId = `TRX${transactions.length + 1}`;
+    // Calculate the next ID based on the count
+    const nextId = `TRX${transactions.length + 1}`;
 
-      return nextId;
+    return nextId;
   } catch (error) {
-      console.error("Error getting next transaction ID:", error);
-      throw error;
+    console.error("Error getting next transaction ID:", error);
+    throw error;
   }
 };
