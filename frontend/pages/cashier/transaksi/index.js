@@ -14,6 +14,7 @@ import AddTransactionModal from "@/lib/addTransactionModal";
 import Head from "next/head";
 import { fetchBooks } from "@/lib/getBook";
 import { fetchEmployees } from "@/lib/getEmployee";
+import { getNextTransactionId } from "@/lib/getTransaction";
 
 export default function Kasir() {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
@@ -43,7 +44,8 @@ export default function Kasir() {
           router.push("/login");
           return;
         }
-
+        const nextId = await getNextTransactionId();
+        setTransactionID(nextId);
         const employeesData = await fetchEmployees();
         setEmployees(employeesData);
         const employee = employeesData.find((emp) => emp.username === username);
@@ -71,21 +73,39 @@ export default function Kasir() {
   const handleAddRow = async (newRow) => {
     try {
       const bookID = await fetchBookIdByTitle(newRow.title);
-      setTransactionID(newRow.idTransaction);
+      newRow.idTransaction = transactionId; 
       console.log("newRow:", newRow);
       console.log("bookID:", bookID);
       console.log("employeeId:", employeeId);
       // Ensure both bookID and employeeId are available
       if (bookID !== null && employeeId !== null) {
-        setRows([...rows, newRow]);
-        setBooks([...books, { bookID, quantity: newRow.quantity }]);
+        // Check if the book already exists in the rows
+        const existingRowIndex = rows.findIndex(row => row.title === newRow.title);
+        if (existingRowIndex !== -1) {
+          // If the book already exists, update the quantity in the existing row
+          const updatedRows = [...rows];
+          updatedRows[existingRowIndex].quantity += newRow.quantity;
+          setRows(updatedRows);
+        } else {
+          // If the book doesn't exist, add a new row
+          setRows([...rows, newRow]);
+        }
+        // Update the quantity in the books array
+        const updatedBooks = [...books];
+        const existingBookIndex = updatedBooks.findIndex(book => book.bookID === bookID);
+        if (existingBookIndex !== -1) {
+          updatedBooks[existingBookIndex].quantity += newRow.quantity;
+        } else {
+          updatedBooks.push({ bookID, quantity: newRow.quantity });
+        }
+        setBooks(updatedBooks);
       } else {
         console.error("Error adding row: bookID is null");
       }
     } catch (error) {
       console.error("Error handling add row:", error);
     }
-  };
+  };  
 
   const handleDeleteRow = () => {
     setIsDeleteModalOpen(true);
