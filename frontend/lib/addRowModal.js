@@ -73,15 +73,12 @@ const inputStyle = {
 
 const AddRowModal = ({ isOpen, onClose, onAddRow }) => {
     const [books, setBooks] = useState([]);
-    const [nextId, setNextId] = useState("");
 
     useEffect(() => {
         const fetchBook = async () => {
             try {
                 const bookData = await fetchBooks();
                 setBooks(bookData);
-                const id = await getNextTransactionId();
-                setNextId(id);
             } catch (error) {
                 console.error("Error fetching books:", error);
                 // Handle error (e.g., show an error message to the user)
@@ -117,7 +114,7 @@ const AddRowModal = ({ isOpen, onClose, onAddRow }) => {
         try {
             onAddRow(newRow)
             setNewRow({
-                idTransaction: nextId,
+                idTransaction: newRow.idTransaction,
                 title: newRow.title,
                 quantity: newRow.quantity,
                 price: newRow.price,
@@ -159,10 +156,12 @@ const AddRowModal = ({ isOpen, onClose, onAddRow }) => {
                             <label style={labelStyle}>Jumlah</label>
                             <input
                                 type="number"
-                                value={newRow.quantity}
-                                onChange={(e) =>
-                                    setNewRow({ ...newRow, quantity: e.target.value })
-                                }
+                                value={newRow.quantity >= 0 ? newRow.quantity : 0}
+                                onChange={(e) => {
+                                    const inputValue = parseInt(e.target.value, 10);
+                                    const validQuantity = isNaN(inputValue) ? 0 : Math.max(0, inputValue);
+                                    setNewRow({ ...newRow, quantity: validQuantity });
+                                }}
                                 style={inputStyle}
                             />
                         </div>
