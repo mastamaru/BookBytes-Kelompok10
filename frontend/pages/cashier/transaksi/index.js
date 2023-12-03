@@ -3,14 +3,14 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import moment from "moment";
 import "moment-timezone";
-import AddRowModal from "@/lib/addRowModal";
+import AddRowModal from "@/components/addRowModal";
 import NavbarAdmin from "@/components/NavbarAdmin";
 import Button from "@/components/Button";
 import { fetchTransactions } from "@/lib/getTransaction";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
-import DeleteRowModal from "@/lib/delRowModal";
-import AddTransactionModal from "@/lib/addTransactionModal";
+import DeleteRowModal from "@/components/delRowModal";
+import AddTransactionModal from "@/components/addTransactionModal";
 import Head from "next/head";
 import { fetchBooks } from "@/lib/getBook";
 import { fetchEmployees } from "@/lib/getEmployee";
@@ -73,14 +73,16 @@ export default function Kasir() {
   const handleAddRow = async (newRow) => {
     try {
       const bookID = await fetchBookIdByTitle(newRow.title);
-      newRow.idTransaction = transactionId; 
+      newRow.idTransaction = transactionId;
       console.log("newRow:", newRow);
       console.log("bookID:", bookID);
       console.log("employeeId:", employeeId);
       // Ensure both bookID and employeeId are available
       if (bookID !== null && employeeId !== null) {
         // Check if the book already exists in the rows
-        const existingRowIndex = rows.findIndex(row => row.title === newRow.title);
+        const existingRowIndex = rows.findIndex(
+          (row) => row.title === newRow.title
+        );
         if (existingRowIndex !== -1) {
           // If the book already exists, update the quantity in the existing row
           const updatedRows = [...rows];
@@ -92,7 +94,9 @@ export default function Kasir() {
         }
         // Update the quantity in the books array
         const updatedBooks = [...books];
-        const existingBookIndex = updatedBooks.findIndex(book => book.bookID === bookID);
+        const existingBookIndex = updatedBooks.findIndex(
+          (book) => book.bookID === bookID
+        );
         if (existingBookIndex !== -1) {
           updatedBooks[existingBookIndex].quantity += newRow.quantity;
         } else {
@@ -105,7 +109,7 @@ export default function Kasir() {
     } catch (error) {
       console.error("Error handling add row:", error);
     }
-  };  
+  };
 
   const handleDeleteRow = () => {
     setIsDeleteModalOpen(true);
