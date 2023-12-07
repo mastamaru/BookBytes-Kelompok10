@@ -34,6 +34,16 @@ first, u need to clone this repo. use the command below
   `````
   git clone https://github.com/mastamaru/BookBytes-Kelompok10
   `````
+## Account Login
+`````
+Admin
+username : john_doe
+password : password123
+Kasir
+username : login
+password : logindummy
+`````
+
 ## Frontend
 1. Go to frontend directory
 ````
