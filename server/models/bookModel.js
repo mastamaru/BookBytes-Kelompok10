@@ -33,6 +33,15 @@ const bookSchema = new mongoose.Schema({
     genre: {
         type: String,
         required: true
-    }});
+    },
+    stock: {
+        type: Number,
+        required: true
+    },
+    imgUrl: {
+        type: String,
+        required: false
+    }
+});
 
 module.exports = mongoose.model('Book', bookSchema);
