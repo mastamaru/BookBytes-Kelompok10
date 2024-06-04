@@ -1,15 +1,15 @@
 <h1 align="center">
-  BookByte Web App 💵📚
+  BookByte Web App (Extended) 💵📚
 </h1>
 
-Kelompok 10 Member List :
-| No | Nama | NIM | Role |
+IAI Kelompok Besar 2:
+| No | Nama Kelompok Kecil | Anggota Tim Kecil | Jobdesc |
 | --- | --- | --- | --- |
-| 1. | [Muhammad Al Ghifari Fausta](https://github.com/mastamaru) | 21/477892/TK/52646 | Project leader + Fullstack Developer | 
-| 2. | [Laily Medha Nur Ihsanti](https://github.com/lilypon246) | 21/474650/TK/52363 | UI/UX Designer + Frontend Developer |
-| 3. | [Muhammad Ismail Azmi](https://github.com/mailbau) | 21/473264/TK/52149 | Fullstack Developer |
-| 4. | [Rhafif Prasetyo](https://github.com/rhafif-p) | 21/477018/TK/52532| Fullstack Developer |
-| 5. | [Thoriqutsani Anastyo Rasnan](https://github.com/goodguythor) | 21/479154/TK/52816 | Fullstack Developer|
+| 1. | Kelompok 5 | <li> Nafisa Ramadhania <li> Laily Medha Nur Ihsanti <li> Muhammad Hasnan Regard | Fungsi Stock Management (Inventory) | 
+| 2. | Kelompok 6 | <li> Salwa Maharani <li> Siti Hashifah Qatrunnada <li> Dhiyaa Amalia Putri | Fungsi Transaction (Cashier)  |
+| 3. | Kelompok 7 | <li> Salma Asma Nadia <li> Annisa Uswa Sufia <li> Qornain Aji | - |
+| 4. | Kelompok 8 | <li> Anisa Bintang Maharani <li> Muhammad Azka Adhisetama <li> Adhitya Bayu Pangestu | - |
+| 5. | Kelompok 9 | <li> Thoriqutsani Anastyo Rasnan <li> Stephanus Edward Parulian | - |
 
 # Deskripsi Aplikasi
 Aplikasi kasir berbasis web yang terintegrasi dengan MongoDB sebagai database. Aplikasi ini ditujukan untuk bisnis toko buku. Dengan memanfaatkan role di toko buku, yakni admin dan kasir aplikasi ini dapat memudahkan urusan manajemen buku dan pemantauan transaksi.
@@ -24,10 +24,9 @@ Aplikasi kasir berbasis web yang terintegrasi dengan MongoDB sebagai database. A
 - MongoDB
   
 # Links
-- Frontend Deploy    : https://bookbyte-kelompok10.vercel.app/
-- Backend Deploy     : https://book-bytes-kelompok10.vercel.app
-- YouTube Video      : https://youtu.be/kIXGy3HsiqM
-- Presentation Slide : https://www.canva.com/design/DAFzrJhHuqc/B2jAcayqfcP6EovGCt3DiA/edit?utm_content=DAFzrJhHuqc&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton
+- Frontend Deploy    : -
+- Backend Deploy     : -
+- Presentation Slide : https://www.canva.com/design/DAGHHpJzI7U/InhkjkN1vLuExUKH_QmM8Q/view?utm_content=DAGHHpJzI7U&utm_campaign=designshare&utm_medium=link&utm_source=editor
 
 # How to run this project ⁉️
 first, u need to clone this repo. use the command below
