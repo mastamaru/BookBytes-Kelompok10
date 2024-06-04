@@ -24,9 +24,9 @@ Aplikasi kasir berbasis web yang terintegrasi dengan MongoDB sebagai database. A
 - MongoDB
   
 # Links
-- Frontend Deploy    : https://bookbyte-kelompok10.vercel.app/
-- Backend Deploy     : https://book-bytes-kelompok10.vercel.app
-- Presentation Slide : ...
+- Frontend Deploy    : -
+- Backend Deploy     : -
+- Presentation Slide : https://www.canva.com/design/DAGHHpJzI7U/InhkjkN1vLuExUKH_QmM8Q/view?utm_content=DAGHHpJzI7U&utm_campaign=designshare&utm_medium=link&utm_source=editor
 
 # How to run this project ⁉️
 first, u need to clone this repo. use the command below
