@@ -4,7 +4,7 @@ const Book = require("../models/bookModel");
 const transactionController = {
   createTransaction: async (req, res) => {
     try {
-      const { idTransaction, books, employeeID } = req.body;
+      const { idTransaction, books, employeeID, imgPayment } = req.body;
 
       let totalPrice = 0;
 
@@ -24,6 +24,7 @@ const transactionController = {
         books,
         totalPrice,
         employeeID,
+        imgPayment,
       });
 
       await transaction.save();

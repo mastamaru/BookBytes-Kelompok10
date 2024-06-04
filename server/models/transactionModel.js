@@ -24,6 +24,15 @@ const transactionSchema = new mongoose.Schema({
     employeeID: {
         type: String,
         required: true
+    },
+    imgPayment: {
+        type: String,
+        required: true
+    },
+    status: {
+        type: String,
+        enum: ['PENDING', 'APPROVED', 'REJECTED'],
+        default: 'PENDING'
     }
 }, { timestamps: true });
 
