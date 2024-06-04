@@ -2,6 +2,8 @@
 import React, { useState } from "react";
 import Button from "@/components/Button";
 import { addBook } from "@/lib/addBook";
+import { storage, db } from '@/lib/FirebaseConfig'; 
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 
 const predefinedGenres = [
   "Fiksi",
@@ -83,6 +85,7 @@ const inputStyle = {
 
 const AddBookModal = ({ isOpen, onClose, onAddBook }) => {
   const [newBook, setNewBook] = useState({
+    imgUrl: "",
     bookID: "",
     title: "",
     author: "",
@@ -90,6 +93,7 @@ const AddBookModal = ({ isOpen, onClose, onAddBook }) => {
     publisher: "",
     year: "",
     genre: "",
+    stock: "",
     price: "",
   });
 
@@ -99,6 +103,7 @@ const AddBookModal = ({ isOpen, onClose, onAddBook }) => {
       // Close the modal and trigger the parent's onAddBook function
       onAddBook();
       setNewBook({
+        imgUrl: "",
         bookID: "",
         title: "",
         author: "",
@@ -106,12 +111,36 @@ const AddBookModal = ({ isOpen, onClose, onAddBook }) => {
         publisher: "",
         year: "",
         genre: "",
+        stock: "",
         price: "",
       });
       onClose();
     } catch (error) {
       console.error("Error adding book:", error);
       // Handle error (e.g., show an error message to the user)
+    }
+  };
+
+  const [imgFile, setImgFile] = useState(null);
+  const handleFileUpload = async (imgFile) => {
+    // e.preventDefault();
+    // const file = document.getElementById('fileInput').files[0];
+
+    if (!imgFile) {
+      alert('Please select a file first');
+      return;
+    }
+
+    try {
+      const storageRef = ref(storage, `uploads/${imgFile.name}`);
+      
+      const snapshot = await uploadBytes(storageRef, imgFile);
+      
+      const url = await getDownloadURL(snapshot.ref);
+      setNewBook({ ...newBook, imgUrl: url });      
+      alert('File uploaded successfully');
+    } catch (error) {
+      console.error('Error uploading file:', error);
     }
   };
 
@@ -131,6 +160,22 @@ const AddBookModal = ({ isOpen, onClose, onAddBook }) => {
             </h2>
 
             {/* Input fields */}
+            <div style={inputContainerStyle}>
+              <label style={labelStyle}>Upload image</label>
+              <input
+                type="file"
+                value={newBook.imgFile}
+                onChange={(e) =>
+                  setImgFile(e.target.files[0])
+                  // setNewBook({ ...newBook, imgUrl: e.target.value })
+                }
+                style={inputStyle}
+              />
+              <div className="flex justify-end items-end">
+                <button className="p-1 font-medium font-mplus bg-purple-300 w-fit rounded-md mt-1" type="submit" onClick={() => handleFileUpload(imgFile)}>Upload</button>
+              </div>
+            </div>
+
             <div style={inputContainerStyle}>
               <label style={labelStyle}>Book ID</label>
               <input
@@ -221,6 +266,18 @@ const AddBookModal = ({ isOpen, onClose, onAddBook }) => {
                   </option>
                 ))}
               </select>
+            </div>
+
+            <div style={inputContainerStyle}>
+              <label style={labelStyle}>Stock</label>
+              <input
+                type="text"
+                value={newBook.stock}
+                onChange={(e) =>
+                  setNewBook({ ...newBook, stock: e.target.value })
+                }
+                style={inputStyle}
+              />
             </div>
 
             <div style={inputContainerStyle}>

@@ -136,6 +136,7 @@ export default function Buku() {
                       <th style={{ fontSize: "16px" }}>Penerbit</th>
                       <th style={{ fontSize: "16px" }}>Tahun Terbit</th>
                       <th style={{ fontSize: "16px" }}>Genre</th>
+                      <th style={{ fontSize: "16px" }}>Stock</th>
                       <th style={{ fontSize: "16px" }}>Harga</th>
                       <th style={{ fontSize: "16px" }}>Aksi</th>
                     </tr>
@@ -149,6 +150,7 @@ export default function Buku() {
                         <td>{book.publisher}</td>
                         <td>{book.year}</td>
                         <td>{book.genre}</td>
+                        <td>{book.stock}</td>
                         <td>{book.price}</td>
                         <td
                           style={{

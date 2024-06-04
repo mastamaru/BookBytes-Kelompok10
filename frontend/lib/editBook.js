@@ -1,8 +1,8 @@
-const API_URL = "https://book-bytes-kelompok10.vercel.app";
+// const NEXT_PUBLIC_URL = "https://book-bytes-kelompok10.vercel.app";
 
 export const editBook = async (bookID, updatedBook) => {
   try {
-    const response = await fetch(`${API_URL}/books/${bookID}`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_URL}/books/${bookID}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",

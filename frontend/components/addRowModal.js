@@ -72,6 +72,8 @@ const inputStyle = {
 
 const AddRowModal = ({ isOpen, onClose, onAddRow }) => {
   const [books, setBooks] = useState([]);
+  const [selectedStock, setSelectedStock] = useState(0);
+  console.log(selectedStock)
 
   useEffect(() => {
     const fetchBook = async () => {
@@ -99,7 +101,12 @@ const AddRowModal = ({ isOpen, onClose, onAddRow }) => {
 
   const handleTitleChange = (e) => {
     const selectedTitle = e.target.value;
+    console.log("Selected Title:", selectedTitle);
     const selectedBook = books.find((book) => book.title === selectedTitle);
+
+    if (selectedBook) {
+      setSelectedStock(selectedBook.stock);
+    }
 
     setNewRow({
       ...newRow,
@@ -114,10 +121,11 @@ const AddRowModal = ({ isOpen, onClose, onAddRow }) => {
       setNewRow({
         idTransaction: newRow.idTransaction,
         title: newRow.title,
-        quantity: newRow.quantity,
+        quantity: null,
         price: newRow.price,
         totalPrice: newRow.totalPrice,
       });
+      setSelectedStock(null);
       onClose();
     } catch (error) {
       console.error("Error adding row:", error);
@@ -144,15 +152,17 @@ const AddRowModal = ({ isOpen, onClose, onAddRow }) => {
               <label>Judul Buku</label>
               <select
                 value={books.title}
-                onChange={handleTitleChange}
+                onChange={
+                  handleTitleChange
+                }
                 style={inputStyle}
               >
                 <option value="" disabled selected>
                   Select a book
                 </option>
                 {books.map((book) => (
-                  <option key={book.bookID} value={book.title}>
-                    {book.title}
+                  <option key={book.bookID} value={book.title} disabled={book.stock<=0}>
+                    {`${book.title}: ${book.stock}`}
                   </option>
                 ))}
               </select>
@@ -167,7 +177,7 @@ const AddRowModal = ({ isOpen, onClose, onAddRow }) => {
                   const inputValue = parseInt(e.target.value, 10);
                   const validQuantity = isNaN(inputValue)
                     ? 0
-                    : Math.max(0, inputValue);
+                    : Math.max(0, Math.min(inputValue, selectedStock));
                   setNewRow({ ...newRow, quantity: validQuantity });
                 }}
                 style={inputStyle}
@@ -177,7 +187,10 @@ const AddRowModal = ({ isOpen, onClose, onAddRow }) => {
             {/* Button Container */}
             <div style={buttonContainerStyle}>
               {/* Cancel Button */}
-              <div style={cancelButtonStyle} onClick={onClose}>
+              <div style={cancelButtonStyle} onClick={() => {
+                onClose();
+                setSelectedStock(null);
+              }}>
                 Batal
               </div>
               {/* Submit Button */}

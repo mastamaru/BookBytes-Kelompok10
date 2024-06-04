@@ -1,7 +1,8 @@
 import React from "react";
-import { useEffect, useState } from "react";
-import Button from "@/components/Button";
+import { useState } from "react";
 import { addTransaction } from "@/lib/addTransaction";
+import { storage, db } from '@/lib/FirebaseConfig'; 
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 
 const modalOverlayStyle = {
   position: "fixed",
@@ -48,6 +49,26 @@ const cancelButtonStyle = {
   border: "1px solid #000",
 };
 
+const labelStyle = {
+  marginBottom: "5px",
+  fontweight: "bold",
+};
+
+const inputContainerStyle = {
+  display: "flex",
+  flexDirection: "column",
+  marginBottom: "15px",
+  marginTop: "20px",
+};
+
+const inputStyle = {
+  width: "100%", // Set to your desired width
+  padding: "10px",
+  borderRadius: "8px",
+  boxSizing: "border-box",
+  border: "1px solid #ccc",
+};
+
 const AddTransactionModal = ({
   isOpen,
   onClose,
@@ -66,6 +87,7 @@ const AddTransactionModal = ({
       ...newTransaction,
       books: books,
       employeeID: employeeID,
+      imgPayment: imgUrl,
     });
     try {
       // Call your addTransaction function here
@@ -76,6 +98,27 @@ const AddTransactionModal = ({
     } catch (error) {
       console.error("Error adding transaction:", error);
       // Handle error (e.g., show an error message to the user)
+    }
+  };
+
+  const [imgFile, setImgFile] = useState(null);
+  const [imgUrl, setImgUrl] = useState(null);
+  const handleFileUpload = async (imgFile) => {
+    if (!imgFile) {
+      alert('Please select a file first');
+      return;
+    }
+
+    try {
+      const storageRef = ref(storage, `payment/${imgFile.name}`);
+      
+      const snapshot = await uploadBytes(storageRef, imgFile);
+      
+      const url = await getDownloadURL(snapshot.ref);
+      setImgUrl(url);   
+      alert('File uploaded successfully');
+    } catch (error) {
+      console.error('Error uploading file:', error);
     }
   };
 
@@ -111,6 +154,23 @@ const AddTransactionModal = ({
             >
               TOTAL HARGA RP{totalPrice}
             </h2>
+
+            {/* upload file bukti bayar */}
+            <div style={inputContainerStyle}>
+              <label style={labelStyle}>Upload Bukti Bayar</label>
+              <input
+                type="file"
+                // value={(e) => setImgFile(e.target.files[0])}
+                onChange={(e) =>
+                  setImgFile(e.target.files[0])
+                }
+                style={inputStyle}
+              />
+              <div className="flex justify-end items-end">
+                <button className="p-1 font-medium font-mplus bg-purple-300 w-fit rounded-md mt-1" type="submit" onClick={() => handleFileUpload(imgFile)}>Upload</button>
+              </div>
+            </div>
+
             <div style={buttonContainerStyle}>
               <div style={cancelButtonStyle} onClick={onClose}>
                 Kembali

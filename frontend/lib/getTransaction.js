@@ -1,10 +1,10 @@
 import next from "next";
 
-const API_URL = "https://book-bytes-kelompok10.vercel.app";
+// const NEXT_PUBLIC_URL = "https://book-bytes-kelompok10.vercel.app";
 
 export const fetchTransactions = async () => {
   try {
-    const transactionsResponse = await fetch(`${API_URL}/transactions`); // Ganti dengan path ke route 'getAllTransactions' di backend Anda
+    const transactionsResponse = await fetch(`${process.env.NEXT_PUBLIC_URL}/transactions`); // Ganti dengan path ke route 'getAllTransactions' di backend Anda
     if (!transactionsResponse.ok) {
       throw new Error("Network response was not ok for transactions");
     }
@@ -12,7 +12,7 @@ export const fetchTransactions = async () => {
 
     // Fetch employees
     // ...
-    const employeeResponse = await fetch(`${API_URL}/employee`);
+    const employeeResponse = await fetch(`${process.env.NEXT_PUBLIC_URL}/employee`);
     if (!employeeResponse.ok) {
       throw new Error("Network response for employees was not ok");
     }
