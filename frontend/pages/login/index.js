@@ -38,18 +38,21 @@ export default function LoginSignup() {
         // Save the token to localStorage
         localStorage.setItem("token", result.token);
         localStorage.setItem("username", values.username);
+        localStorage.setItem("role", result.role.toLowerCase());
         // Assuming the role is also returned in the result object
         // Redirect based on the role
-        if (result.role.toLowerCase() === "cashier") {
+        if (localStorage.getItem("role") === "cashier") {
           console.log("Login Success: Cashier");
           SetMSG("Login Success: Cashier");
           router.push("cashier/transaksi");
-
-          // Redirect to cashier's page if needed
-        } else if (result.role.toLowerCase() === "admin") {
+        } else if (localStorage.getItem("role") === "admin") {
           console.log("Login Success: Admin");
           SetMSG("Login Success: Admin");
           router.push("/admin/transaksi");
+        } else if (localStorage.getItem("role") === "user") {
+          console.log("Login Success: User");
+          SetMSG("Login Success: User");
+          router.push("/user/katalog");
         } else {
           // If role is not cashier or admin, handle accordingly
           SetMSG("Unrecognized role");
