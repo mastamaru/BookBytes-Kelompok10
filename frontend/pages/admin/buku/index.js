@@ -21,13 +21,23 @@ export default function Buku() {
   useEffect(() => {
     //add token validation to check user session
     const token = localStorage.getItem("token");
+    const role = localStorage.getItem("role");
 
     const isTokenValid = () => {
-      return token != null;
+      return token != null && role === "admin";
     };
 
     if (!isTokenValid()) {
-      router.push("/login");
+      console.log("Navigation error: You are authorized to see this page!");
+      if(token == null){
+        router.push("/login");
+      }
+      if(role === "cashier"){
+        router.push("/cashier/transaksi");
+      } 
+      if(role === "user"){
+        router.push("/user/katalog");
+      }
     }
 
     const getBook = async () => {
