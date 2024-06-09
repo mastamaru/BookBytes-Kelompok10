@@ -10,6 +10,27 @@ export default function Katalog(){
   const router = useRouter();
 
   useEffect(() => {
+    // add token validation to check user session
+    const token = localStorage.getItem("token");
+    const role = localStorage.getItem("role");
+
+    const isTokenValid = () => {
+      return token != null && role === "user";
+    };
+
+    if (!isTokenValid()) {
+      console.log("Navigation error: You are authorized to see this page!");
+      if(token == null){
+        router.push("/login");
+      }
+      if(role === "admin"){
+        router.push("/admin/transaksi");
+      } 
+      if(role === "cashier"){
+        router.push("/cashier/transaksi");
+      }
+    }
+
     const getBook = async () => {
       try {
         const data = await fetchBooks();
@@ -21,12 +42,12 @@ export default function Katalog(){
     };
 
     getBook();
-  },[]);
+  }, [router]);
 
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("username");
-    router.push("/user/auth/login");
+    router.push("/login");
   }
 
   console.log(books)

@@ -30,26 +30,31 @@ export default function Kasir() {
   var ind;
 
   useEffect(() => {
+    // add token validation to check user session
     const token = localStorage.getItem("token");
-    const username = localStorage.getItem("username");
+    const role = localStorage.getItem("role");
 
     const isTokenValid = () => {
-      setUserName(username);
-      return token != null;
+      return token != null && role === "user";
     };
+
+    if (!isTokenValid()) {
+      console.log("Navigation error: You are authorized to see this page!");
+      if(token == null){
+        router.push("/login");
+      }
+      if(role === "admin"){
+        router.push("/admin/transaksi");
+      } 
+      if(role === "cashier"){
+        router.push("/cashier/transaksi");
+      }
+    }
 
     const fetchData = async () => {
       try {
-        if (!isTokenValid()) {
-          router.push("/login");
-          return;
-        }
         const nextId = await getNextTransactionId();
         setTransactionID(nextId);
-        const employeesData = await fetchEmployees();
-        setEmployees(employeesData);
-        const employee = employeesData.find((emp) => emp.username === username);
-        setEmployeeId(employee ? employee.id : null);
       } catch (error) {
         console.error("Error fetching data:", error);
         // Handle error (e.g., show an error message to the user)
@@ -57,7 +62,7 @@ export default function Kasir() {
     };
 
     fetchData();
-  }, [router, userName]);
+  }, [router]);
 
   const fetchBookIdByTitle = async (title) => {
     try {
@@ -133,15 +138,6 @@ export default function Kasir() {
     } catch (error) {
       console.error("Error deleting row", error);
     }
-  };
-
-  // Fungsi untuk menangani proses logout
-  const handleLogout = () => {
-    // Menghapus token dari localStorage
-    localStorage.removeItem("token");
-
-    // Redirect ke halaman login
-    router.push("/login");
   };
 
   const calculateTotalPrice = () => {
