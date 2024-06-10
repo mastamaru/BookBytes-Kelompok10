@@ -83,11 +83,14 @@ const AddTransactionModal = ({
   });
 
   const handleTransaction = async () => {
+    const username = localStorage.username
+    
     setNewTransaction({
       ...newTransaction,
       books: books,
       employeeID: employeeID,
       imgPayment: imgUrl,
+      username: username
     });
     try {
       // Call your addTransaction function here

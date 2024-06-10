@@ -39,6 +39,44 @@ export const fetchTransactions = async () => {
   }
 };
 
+export const fetchTransactionsByUserID = async (userID) => {
+  try {
+    const transactionsResponse = await fetch(`${process.env.NEXT_PUBLIC_URL}/transactions/user/${userID}`);
+    if (!transactionsResponse.ok) {
+      throw new Error("Network response was not ok for transactions by user ID");
+    }
+    const transactions = await transactionsResponse.json();
+
+    // Fetch books to map book titles
+    const bookIDs = transactions.flatMap(transaction => transaction.books.map(book => book.bookID));
+    const uniqueBookIDs = [...new Set(bookIDs)];
+    const booksResponse = await fetch(`${process.env.NEXT_PUBLIC_URL}/books?ids=${uniqueBookIDs.join(",")}`);
+    if (!booksResponse.ok) {
+      throw new Error("Network response for books was not ok");
+    }
+    const booksData = await booksResponse.json();
+
+    const mergeData = transactions.map((transaction) => {
+      const mappedBooks = transaction.books.map((book) => {
+        const matchedBook = booksData.find((b) => b.bookID === book.bookID);
+        return {
+          ...book,
+          title: matchedBook ? matchedBook.title : "Unknown",
+        };
+      });
+      return {
+        ...transaction,
+        books: mappedBooks,
+      };
+    });
+
+    return mergeData;
+  } catch (error) {
+    console.error("Error fetching transactions by user ID:", error);
+    throw error;
+  }
+};
+
 export const getNextTransactionId = async () => {
   try {
     // Fetch transactions to get the count

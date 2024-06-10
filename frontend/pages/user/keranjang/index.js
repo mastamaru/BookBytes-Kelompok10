@@ -20,7 +20,7 @@ export default function Kasir() {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isTransactionModalOpen, setIsTransactionModalOpen] = useState(false);
-  const [userName, setUserName] = useState("");
+  const [username, setUserName] = useState("");
   const [employees, setEmployees] = useState([]);
   const [employeeId, setEmployeeId] = useState(null);
   const [transactionId, setTransactionID] = useState("");
@@ -222,15 +222,16 @@ export default function Kasir() {
                 onClick={() => router.push('/user/historypesanan')}
                 // onClick={() => setIsTransactionModalOpen(true)}
               />
-              {/* <AddTransactionModal
+              <AddTransactionModal
                 isOpen={isTransactionModalOpen}
                 onClose={() => setIsTransactionModalOpen(false)}
                 books={books}
                 transactionID={transactionId}
                 employeeID={employeeId}
+                username={username}
                 totalPrice={total}
                 onAddRow={handleTransaction}
-              /> */}
+              />
             </div>
           </div>
         </div>

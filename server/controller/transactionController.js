@@ -130,6 +130,46 @@ const transactionController = {
       next(error);
     }
   },
+
+  getTransactionByUserID: async (req, res) => {
+    try {
+      const { userID } = req.params;
+      const transactions = await Transaction.find({ employeeID: userID });
+  
+      if (!transactions.length) {
+        return res.status(404).json({ message: "No transactions found for this user" });
+      }
+  
+      const bookIDs = [];
+      transactions.forEach((transaction) => {
+        transaction.books.forEach((book) => {
+          if (!bookIDs.includes(book.bookID)) {
+            bookIDs.push(book.bookID);
+          }
+        });
+      });
+  
+      const books = await Book.find({ bookID: { $in: bookIDs } });
+  
+      const mappedTransactions = transactions.map((transaction) => {
+        const mappedBooks = transaction.books.map((book) => {
+          const matchedBook = books.find((b) => b.bookID === book.bookID);
+          return {
+            ...book._doc,
+            title: matchedBook ? matchedBook.title : "Unknown",
+          };
+        });
+        return {
+          ...transaction._doc,
+          books: mappedBooks,
+        };
+      });
+  
+      res.status(200).json(mappedTransactions);
+    } catch (error) {
+      res.status(500).json({ message: "Error retrieving transactions", error });
+    }
+  },
 };
 
 module.exports = transactionController;

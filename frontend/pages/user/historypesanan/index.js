@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { fetchBooks } from "@/lib/getBook";
 import { fetchTransactions } from "@/lib/getTransaction";
+import { fetchTransactionsByUserID } from "@/lib/getTransaction";
 import AddTransactionModal from "@/components/addTransactionModal";
 import moment from "moment";
 import "moment-timezone";
@@ -58,7 +59,7 @@ export default function Transaction(){
     useEffect(() => {
         const getTransaction = async () => {
             try {
-              const data = await fetchTransactions();
+              const data = await fetchTransactionsByUserID();
               console.log("Fetched Transactions:", data); // Menampilkan data ke console
               setTransactions(data);
             } catch (error) {
