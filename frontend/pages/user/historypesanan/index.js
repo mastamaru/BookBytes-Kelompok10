@@ -10,29 +10,64 @@ import Button from "@/components/Button";
 import Head from "next/head";
 
 export default function Transaction(){
-    // add token validation to check user session
-    const token = localStorage.getItem("token");
-    const role = localStorage.getItem("role");
-
-    const isTokenValid = () => {
-      return token != null && role === "user";
-    };
-
-    if (!isTokenValid()) {
-      console.log("Navigation error: You are authorized to see this page!");
-      if(token == null){
-        router.push("/login");
-      }
-      if(role === "admin"){
-        router.push("/admin/transaksi");
-      } 
-      if(role === "cashier"){
-        router.push("/cashier/transaksi");
-      }
-    }
     const [transactions, setTransactions] = useState([]);
     const [isTransactionModalOpen, setIsTransactionModalOpen] = useState(false);
+    const [userName, setUserName] = useState("");
+    const [employees, setEmployees] = useState([]);
+    const [employeeId, setEmployeeId] = useState(null);
+    const [transactionId, setTransactionID] = useState("");
     const [books, setBooks] = useState([]);
+    const [rows, setRows] = useState([]);
+    const router = useRouter();
+
+    useEffect(() => {
+        // add token validation to check user session
+        const token = localStorage.getItem("token");
+        const role = localStorage.getItem("role");
+    
+        const isTokenValid = () => {
+          return token != null && role === "user";
+        };
+    
+        if (!isTokenValid()) {
+          console.log("Navigation error: You are authorized to see this page!");
+          if(token == null){
+            router.push("/login");
+          }
+          if(role === "admin"){
+            router.push("/admin/transaksi");
+          } 
+          if(role === "cashier"){
+            router.push("/cashier/transaksi");
+          }
+        }
+    
+        const fetchData = async () => {
+          try {
+            const nextId = await getNextTransactionId();
+            setTransactionID(nextId);
+          } catch (error) {
+            console.error("Error fetching data:", error);
+            // Handle error (e.g., show an error message to the user)
+          }
+        };
+    
+        fetchData();
+      }, [router]);
+
+    useEffect(() => {
+        const getTransaction = async () => {
+            try {
+              const data = await fetchTransactions();
+              console.log("Fetched Transactions:", data); // Menampilkan data ke console
+              setTransactions(data);
+            } catch (error) {
+              console.error(error);
+            }
+          };
+      
+          getTransaction();
+    },[])
 
     const handleLogout = () => {
         localStorage.removeItem("token");
@@ -67,6 +102,15 @@ export default function Transaction(){
       
           getTransaction();
     },[])
+
+    const calculateTotalPrice = () => {
+        return rows.reduce((total, row) => {
+          // Calculate the price for each row and add it to the total
+          const rowTotalPrice = row.quantity * row.price;
+          return total + rowTotalPrice;
+        }, 0);
+      };
+      const total = calculateTotalPrice();
 
     console.log(transactions)
     return (
