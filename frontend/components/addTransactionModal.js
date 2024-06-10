@@ -74,8 +74,9 @@ const AddTransactionModal = ({
   onClose,
   books,
   transactionID,
-  employeeID,
+  // employeeID,
   totalPrice,
+  username
 }) => {
   const [newTransaction, setNewTransaction] = useState({
     books: "",
@@ -83,13 +84,12 @@ const AddTransactionModal = ({
   });
 
   const handleTransaction = async () => {
-    const username = localStorage.username
-    
+
     setNewTransaction({
       ...newTransaction,
       books: books,
-      employeeID: employeeID,
-      imgPayment: imgUrl,
+      // employeeID: employeeID,
+      // imgPayment: imgUrl,
       username: username
     });
     try {
@@ -104,26 +104,26 @@ const AddTransactionModal = ({
     }
   };
 
-  const [imgFile, setImgFile] = useState(null);
-  const [imgUrl, setImgUrl] = useState(null);
-  const handleFileUpload = async (imgFile) => {
-    if (!imgFile) {
-      alert('Please select a file first');
-      return;
-    }
+  // const [imgFile, setImgFile] = useState(null);
+  // const [imgUrl, setImgUrl] = useState(null);
+  // const handleFileUpload = async (imgFile) => {
+  //   if (!imgFile) {
+  //     alert('Please select a file first');
+  //     return;
+  //   }
 
-    try {
-      const storageRef = ref(storage, `payment/${imgFile.name}`);
+  //   try {
+  //     const storageRef = ref(storage, `payment/${imgFile.name}`);
       
-      const snapshot = await uploadBytes(storageRef, imgFile);
+  //     const snapshot = await uploadBytes(storageRef, imgFile);
       
-      const url = await getDownloadURL(snapshot.ref);
-      setImgUrl(url);   
-      alert('File uploaded successfully');
-    } catch (error) {
-      console.error('Error uploading file:', error);
-    }
-  };
+  //     const url = await getDownloadURL(snapshot.ref);
+  //     setImgUrl(url);   
+  //     alert('File uploaded successfully');
+  //   } catch (error) {
+  //     console.error('Error uploading file:', error);
+  //   }
+  // };
 
   return (
     <>
@@ -159,7 +159,7 @@ const AddTransactionModal = ({
             </h2>
 
             {/* upload file bukti bayar */}
-            <div style={inputContainerStyle}>
+            {/* <div style={inputContainerStyle}>
               <label style={labelStyle}>Upload Bukti Bayar</label>
               <input
                 type="file"
@@ -172,7 +172,7 @@ const AddTransactionModal = ({
               <div className="flex justify-end items-end">
                 <button className="p-1 font-medium font-mplus bg-purple-300 w-fit rounded-md mt-1" type="submit" onClick={() => handleFileUpload(imgFile)}>Upload</button>
               </div>
-            </div>
+            </div> */}
 
             <div style={buttonContainerStyle}>
               <div style={cancelButtonStyle} onClick={onClose}>

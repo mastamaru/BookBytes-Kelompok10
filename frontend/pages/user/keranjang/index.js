@@ -10,11 +10,12 @@ import { fetchTransactions } from "@/lib/getTransaction";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
 import DeleteRowModal from "@/components/delRowModal";
-import AddTransactionModal from "@/components/addTransactionModal";
+import { addTransaction } from "@/lib/addTransaction";
 import Head from "next/head";
 import { fetchBooks } from "@/lib/getBook";
 import { fetchEmployees } from "@/lib/getEmployee";
 import { getNextTransactionId } from "@/lib/getTransaction";
+import AddTransactionModal from "@/components/addTransactionModal";
 
 export default function Kasir() {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
@@ -33,8 +34,10 @@ export default function Kasir() {
     // add token validation to check user session
     const token = localStorage.getItem("token");
     const role = localStorage.getItem("role");
+    const username = localStorage.getItem("username");
 
     const isTokenValid = () => {
+      setUserName(username);
       return token != null && role === "user";
     };
 
@@ -53,8 +56,16 @@ export default function Kasir() {
 
     const fetchData = async () => {
       try {
+        if (!isTokenValid()) {
+          router.push("/login");
+          return;
+        }
         const nextId = await getNextTransactionId();
         setTransactionID(nextId);
+        const employeesData = await fetchEmployees();
+        setEmployees(employeesData);
+        const employee = employeesData.find((emp) => emp.username === username);
+        setEmployeeId(employee ? employee.id : null);
       } catch (error) {
         console.error("Error fetching data:", error);
         // Handle error (e.g., show an error message to the user)
@@ -62,7 +73,7 @@ export default function Kasir() {
     };
 
     fetchData();
-  }, [router]);
+  }, [router, username]);
 
   const fetchBookIdByTitle = async (title) => {
     try {
@@ -83,7 +94,7 @@ export default function Kasir() {
       console.log("bookID:", bookID);
       console.log("employeeId:", employeeId);
       // Ensure both bookID and employeeId are available
-      if (bookID !== null && employeeId !== null) {
+      if (bookID !== null) {
         // Check if the book already exists in the rows
         const existingRowIndex = rows.findIndex(
           (row) => row.title === newRow.title
@@ -120,9 +131,33 @@ export default function Kasir() {
     setIsDeleteModalOpen(true);
   };
 
-  const handleTransaction = () => {
+  const handleTransaction = async () => {
+    console.log('triggered')
+    setNewTransaction({
+      ...newTransaction,
+      books: books,
+      // employeeID: employeeID,
+      // imgPayment: imgUrl,
+      username: username
+    });
+    try {
+      // Call your addTransaction function here
+      console.log('newTransaction', newTransaction);
+      console.log(username)
+      await addTransaction(newTransaction);
+      onClose();
+      router.push('/user/historypesanan')
+    } catch (error) {
+      console.error("Error adding transaction:", error);
+      // Handle error (e.g., show an error message to the user)
+    }
+
     setIsTransactionModalOpen(true);
   };
+
+  // const handleTransaction = () => {
+  //   setIsTransactionModalOpen(true);
+  // };
 
   const confirmDeleteRow = (index) => {
     ind = index;
@@ -138,6 +173,14 @@ export default function Kasir() {
     } catch (error) {
       console.error("Error deleting row", error);
     }
+  };
+
+  // Fungsi untuk menangani proses logout
+  const handleLogout = () => {
+    // Menghapus token dari localStorage
+    localStorage.removeItem("token");
+    // Redirect ke halaman login
+    router.push("/login");
   };
 
   const calculateTotalPrice = () => {
@@ -219,8 +262,7 @@ export default function Kasir() {
                 color={"green"}
                 text={"> Simpan"}
                 className="py-2 px-4 text-[24px] items-center relative top-[100px] left-[75%]"
-                onClick={() => router.push('/user/historypesanan')}
-                // onClick={() => setIsTransactionModalOpen(true)}
+                onClick={() => setIsTransactionModalOpen(true)}
               />
               <AddTransactionModal
                 isOpen={isTransactionModalOpen}

@@ -39,9 +39,9 @@ export const fetchTransactions = async () => {
   }
 };
 
-export const fetchTransactionsByUserID = async (userID) => {
+export const fetchTransactionsByUsername = async (username) => {
   try {
-    const transactionsResponse = await fetch(`${process.env.NEXT_PUBLIC_URL}/transactions/user/${userID}`);
+    const transactionsResponse = await fetch(`${process.env.NEXT_PUBLIC_URL}/transactions/user/${username}`);
     if (!transactionsResponse.ok) {
       throw new Error("Network response was not ok for transactions by user ID");
     }

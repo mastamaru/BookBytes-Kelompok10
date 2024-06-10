@@ -4,7 +4,7 @@ const Book = require("../models/bookModel");
 const transactionController = {
   createTransaction: async (req, res) => {
     try {
-      const { idTransaction, books, employeeID, imgPayment } = req.body;
+      const { idTransaction, books, username } = req.body;
 
       let totalPrice = 0;
 
@@ -23,8 +23,7 @@ const transactionController = {
         idTransaction,
         books,
         totalPrice,
-        employeeID,
-        imgPayment,
+        username
       });
 
       await transaction.save();
@@ -131,10 +130,10 @@ const transactionController = {
     }
   },
 
-  getTransactionByUserID: async (req, res) => {
+  getTransactionByUsername: async (req, res) => {
     try {
-      const { userID } = req.params;
-      const transactions = await Transaction.find({ employeeID: userID });
+      const { username } = req.params;
+      const transactions = await Transaction.find({ username: username });
   
       if (!transactions.length) {
         return res.status(404).json({ message: "No transactions found for this user" });

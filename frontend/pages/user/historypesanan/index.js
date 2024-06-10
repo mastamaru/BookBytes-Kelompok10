@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { fetchBooks } from "@/lib/getBook";
 import { fetchTransactions } from "@/lib/getTransaction";
-import { fetchTransactionsByUserID } from "@/lib/getTransaction";
+import { fetchTransactionsByUsername } from "@/lib/getTransaction";
 import AddTransactionModal from "@/components/addTransactionModal";
 import moment from "moment";
 import "moment-timezone";
@@ -13,18 +13,19 @@ import Head from "next/head";
 export default function Transaction(){
     const [transactions, setTransactions] = useState([]);
     const [isTransactionModalOpen, setIsTransactionModalOpen] = useState(false);
-    const [userName, setUserName] = useState("");
     const [employees, setEmployees] = useState([]);
     const [employeeId, setEmployeeId] = useState(null);
     const [transactionId, setTransactionID] = useState("");
     const [books, setBooks] = useState([]);
     const [rows, setRows] = useState([]);
     const router = useRouter();
+    let username;
 
     useEffect(() => {
         // add token validation to check user session
         const token = localStorage.getItem("token");
         const role = localStorage.getItem("role");
+        username = localStorage.getItem('username')
     
         const isTokenValid = () => {
           return token != null && role === "user";
@@ -54,12 +55,16 @@ export default function Transaction(){
         };
     
         fetchData();
-      }, [router]);
-
+        }, [router]);
+        
     useEffect(() => {
+        console.log(username)
         const getTransaction = async () => {
             try {
-              const data = await fetchTransactionsByUserID();
+                let data;
+                if(username !== null){
+                    data = await fetchTransactionsByUsername(username);
+                }
               console.log("Fetched Transactions:", data); // Menampilkan data ke console
               setTransactions(data);
             } catch (error) {
@@ -68,7 +73,21 @@ export default function Transaction(){
           };
       
           getTransaction();
-    },[])
+          },[])
+          
+        //   useEffect(() => {
+        //       const getTransaction = async () => {
+        //           try {
+        //             const data = await fetchTransactions();
+        //             console.log("Fetched Transactions:", data); // Menampilkan data ke console
+        //             setTransactions(data);
+        //           } catch (error) {
+        //             console.error(error);
+        //           }
+        //         };
+            
+        //         getTransaction();
+        //   },[])
 
     const handleLogout = () => {
         localStorage.removeItem("token");
@@ -90,19 +109,6 @@ export default function Transaction(){
         }
       };
 
-    useEffect(() => {
-        const getTransaction = async () => {
-            try {
-              const data = await fetchTransactions();
-              console.log("Fetched Transactions:", data); // Menampilkan data ke console
-              setTransactions(data);
-            } catch (error) {
-              console.error(error);
-            }
-          };
-      
-          getTransaction();
-    },[])
 
     const calculateTotalPrice = () => {
         return rows.reduce((total, row) => {
@@ -117,7 +123,7 @@ export default function Transaction(){
     return (
         <>
       <Head>
-        <title>Cashier - Data Transaksi</title>
+        <title>BookBytes - History Pesanan</title>
       </Head>
       <section className="body bg-[url('/assets/bgbookopen.png')] relative h-[100vh] bg-cover">
         <Image
@@ -143,6 +149,7 @@ export default function Transaction(){
                   <tr>
                     <th>ID Transaksi</th>
                     <th>Waktu Transaksi</th>
+                    <th>User</th>
                     <th>Barang Pembelian</th>
                     <th>Total Harga</th>
                     <th>Status</th>
@@ -161,6 +168,7 @@ export default function Transaction(){
                           .tz(transaction.createdAt, "Asia/Jakarta")
                           .format("DD-MM-YY HH:mm")}
                       </td>
+                      <td>{transaction.username}</td>
                       <td>
                         {transaction.books.map((book) => (
                           <div key={book._id}>
