@@ -217,11 +217,12 @@ export default function Kasir() {
               />
               <Button
                 color={"green"}
-                text={"> Bayar"}
+                text={"> Simpan"}
                 className="py-2 px-4 text-[24px] items-center relative top-[100px] left-[75%]"
-                onClick={() => setIsTransactionModalOpen(true)}
+                onClick={() => router.push('/user/historypesanan')}
+                // onClick={() => setIsTransactionModalOpen(true)}
               />
-              <AddTransactionModal
+              {/* <AddTransactionModal
                 isOpen={isTransactionModalOpen}
                 onClose={() => setIsTransactionModalOpen(false)}
                 books={books}
@@ -229,7 +230,7 @@ export default function Kasir() {
                 employeeID={employeeId}
                 totalPrice={total}
                 onAddRow={handleTransaction}
-              />
+              /> */}
             </div>
           </div>
         </div>

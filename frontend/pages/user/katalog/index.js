@@ -115,6 +115,12 @@ export default function Katalog(){
             className="flex py-1 px-5 text-sm items-center relative top-[-10px]"
           />
           <Button
+            onClick={() => router.push('/user/historypesanan')}
+            text={"History Pesanan"}
+            color="blue"
+            className="flex py-1 px-5 text-sm items-center relative top-[-10px]"
+          />
+          <Button
             onClick={handleLogout}
             icon={"/assets/signout.svg"}
             text={"Keluar"}
