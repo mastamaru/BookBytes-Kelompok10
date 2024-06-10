@@ -142,7 +142,6 @@ export default function Transaction(){
                   <tr>
                     <th>ID Transaksi</th>
                     <th>Waktu Transaksi</th>
-                    <th>User</th>
                     <th>Barang Pembelian</th>
                     <th>Total Harga</th>
                     <th>Status</th>
@@ -161,7 +160,6 @@ export default function Transaction(){
                           .tz(transaction.createdAt, "Asia/Jakarta")
                           .format("DD-MM-YY HH:mm")}
                       </td>
-                      <td>{transaction.employeeName}</td>
                       <td>
                         {transaction.books.map((book) => (
                           <div key={book._id}>
@@ -189,8 +187,8 @@ export default function Transaction(){
                         <td className="flex gap-2 items-center justify-center">
                           <Button
                 color={"green"}
-                text={"> Simpan"}
-                className="py-2 px-4 text-[24px] items-center relative top-[100px] left-[75%]"
+                text={"> Bayar"}
+                className="bg-green-500 text-white px-4 py-2 rounded-md"
                 // onClick={() => router.push('/user/historypesanan')}
                 onClick={() => setIsTransactionModalOpen(true)}
               />
