@@ -154,11 +154,13 @@ const EditBookModal = ({ isOpen, onClose, onEditBook, selectedBook }) => {
               value={editedBook.imgFile} 
               onChange={(e) =>
                 setImgFile(e.target.files[0])
-                // setNewBook({ ...newBook, imgUrl: e.target.value })
               }
               style={inputStyle}
               />
           </div>
+          <div className="flex justify-end items-end">
+                <button className="p-1 font-medium font-mplus bg-purple-300 w-fit rounded-md mt-1" type="submit" onClick={() => handleFileUpload(imgFile)}>Upload</button>
+              </div>
           </div>
 
             <div style={inputContainerStyle}>
