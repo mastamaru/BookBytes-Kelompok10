@@ -17,4 +17,6 @@ router.delete("/:idTransaction", transactionController.deleteTransaction);
 
 router.get("/user/:username", transactionController.getTransactionByUsername)
 
+router.patch("/img/:idTransaction", transactionController.updateImgPayment);
+
 module.exports = router;
