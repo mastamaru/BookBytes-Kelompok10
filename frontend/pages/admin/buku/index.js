@@ -11,6 +11,7 @@ import EditBookModal from "@/components/editBookModal";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { delBook } from "@/lib/delBook";
+
 export default function Buku() {
   const [books, setBooks] = useState([]);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
@@ -18,8 +19,8 @@ export default function Buku() {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [selectedBookId, setSelectedBookId] = useState(null);
   const router = useRouter();
+
   useEffect(() => {
-    //add token validation to check user session
     const token = localStorage.getItem("token");
     const role = localStorage.getItem("role");
 
@@ -28,14 +29,14 @@ export default function Buku() {
     };
 
     if (!isTokenValid()) {
-      console.log("Navigation error: You are authorized to see this page!");
-      if(token == null){
+      console.log("Navigation error: You are not authorized to see this page!");
+      if (token == null) {
         router.push("/login");
       }
-      if(role === "cashier"){
+      if (role === "cashier") {
         router.push("/cashier/transaksi");
-      } 
-      if(role === "user"){
+      }
+      if (role === "user") {
         router.push("/user/katalog");
       }
     }
@@ -54,7 +55,6 @@ export default function Buku() {
   }, [router]);
 
   const handleAddBook = async () => {
-    // Refetch books after adding a new book
     const updatedBooks = await fetchBooks();
     setBooks(updatedBooks);
   };
@@ -89,12 +89,9 @@ export default function Buku() {
       console.error("Error deleting book", error);
     }
   };
-  // Fungsi untuk menangani proses logout
-  const handleLogout = () => {
-    // Menghapus token dari localStorage
-    localStorage.removeItem("token");
 
-    // Redirect ke halaman login
+  const handleLogout = () => {
+    localStorage.removeItem("token");
     router.push("/login");
   };
 
@@ -141,6 +138,7 @@ export default function Buku() {
                   <thead>
                     <tr>
                       <th style={{ fontSize: "16px" }}>ID Buku</th>
+                      <th style={{ fontSize: "16px" }}>Gambar</th>
                       <th style={{ fontSize: "16px" }}>Judul Buku</th>
                       <th style={{ fontSize: "16px" }}>Pengarang</th>
                       <th style={{ fontSize: "16px" }}>Penerbit</th>
@@ -155,6 +153,9 @@ export default function Buku() {
                     {books.map((book) => (
                       <tr key={book.bookID}>
                         <td>{book.bookID}</td>
+                        <td>
+                          <Image src={book.imgUrl} alt={book.title} width={50} height={75} />
+                        </td>
                         <td>{book.title}</td>
                         <td>{book.author}</td>
                         <td>{book.publisher}</td>
