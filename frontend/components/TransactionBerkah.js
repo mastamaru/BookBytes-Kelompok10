@@ -102,7 +102,7 @@ const TransactionBerkah = ({
       await addImgPayment(transactionID, {imgPayment: imgUrl});
       onClose();
       alert('upload Bukti Bayar success');
-      // window.location.reload();
+      window.location.reload();
     } catch (error) {
       console.error("Error adding transaction:", error);
       // Handle error (e.g., show an error message to the user)
