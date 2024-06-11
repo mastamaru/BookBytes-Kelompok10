@@ -1,38 +1,120 @@
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { fetchTransactions } from "@/lib/getTransaction";
+import { fetchTransactions, confirmTransaction, rejectTransaction } from "@/lib/getTransaction";
 import moment from "moment";
 import "moment-timezone";
 import NavbarAdmin from "@/components/NavbarAdmin";
 import Button from "@/components/Button";
 import Head from "next/head";
 
-export default function Transaction(){
-    const [transactions, setTransactions] = useState([]);
+export default function Transaction() {
+  const [transactions, setTransactions] = useState([]);
+  const [username, setUserName] = useState("");
+  const router = useRouter();
 
-    const handleLogout = () => {
-        localStorage.removeItem("token");
-        router.push("/login");
+  useEffect(() => {
+    // add token validation to check user session
+    const token = localStorage.getItem("token");
+    const role = localStorage.getItem("role");
+    const username = localStorage.getItem("username");
+    
+    console.log(token)
+
+    const isTokenValid = () => {
+      setUserName(username);
+      return token != null && role === "user";
+    };
+
+    if (!isTokenValid()) {
+      console.log("Navigation error: You are authorized to see this page!");
+      if(token == null){
+        // router.push("/login");
       }
+      if(role === "admin"){
+        router.push("/admin/transaksi");
+      } 
+      if(role === "cashier"){
+        router.push("/cashier/transaction");
+      }
+    }
 
-    useEffect(() => {
-        const getTransaction = async () => {
-            try {
-              const data = await fetchTransactions();
-              console.log("Fetched Transactions:", data); // Menampilkan data ke console
-              setTransactions(data);
-            } catch (error) {
-              console.error(error);
-            }
-          };
-      
-          getTransaction();
-    },[])
+    const fetchData = async () => {
+      try {
+        if (!isTokenValid()) {
+          // router.push("/login");
+          return;
+        }
+        const nextId = await getNextTransactionId();
+        setTransactionID(nextId);
+        const employeesData = await fetchEmployees();
+        setEmployees(employeesData);
+        const employee = employeesData.find((emp) => emp.username === username);
+        setEmployeeId(employee ? employee.id : null);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+        // Handle error (e.g., show an error message to the user)
+      }
+    };
 
-    console.log(transactions)
-    return (
-        <>
+    fetchData();
+  }, []);
+
+  const handleLogout = () => {
+    // Menghapus token dari localStorage
+    localStorage.removeItem("token");
+    // Redirect ke halaman login
+    router.push("/login");
+  };
+
+  useEffect(() => {
+    const getTransaction = async () => {
+      try {
+        const data = await fetchTransactions();
+        console.log("Fetched Transactions:", data);
+        setTransactions(data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    getTransaction();
+  }, []);
+
+  const handleConfirm = async (idTransaction) => {
+    console.log(`Confirm button clicked for transaction ID: ${idTransaction}`);
+    try {
+      const response = await confirmTransaction(idTransaction);
+      if (response.success) {
+        setTransactions((prevTransactions) =>
+          prevTransactions.map((transaction) =>
+            transaction.idTransaction === idTransaction
+              ? { ...transaction, status: 'APPROVED' }
+              : transaction
+          )
+        );
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  
+  const handleReject = async (idTransaction) => {
+    console.log(`Reject button clicked for transaction ID: ${idTransaction}`);
+    try {
+      const response = await rejectTransaction(idTransaction);
+      if (response.success) {
+        setTransactions((prevTransactions) =>
+          prevTransactions.filter((transaction) => transaction.idTransaction !== idTransaction)
+        );
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };  
+
+  return (
+    <>
       <Head>
         <title>Cashier - Data Transaksi</title>
       </Head>
@@ -41,19 +123,12 @@ export default function Transaction(){
           src={"/assets/logo.png"}
           width={250}
           height={100}
-          className="absolute left-[2.5%] top-[3%] "
+          className="absolute left-[2.5%] top-[3%]"
           alt="logo"
         />
-        {/* <NavbarAdmin
-          selectedLabel="Data Transaksi"
-          className="top-[7%] left-[22%] z-[9999]"
-        /> */}
         <div className="pt-[260px] relative">
-
           <div className="flex flex-col items-center ">
-            <h1 className="font-mplus font-medium text-[65px]">
-              Data Transaksi
-            </h1>
+            <h1 className="font-mplus font-medium text-[65px]">Data Transaksi</h1>
             <div className="table-container mt-12 max-h-[48vh] overflow-y-scroll">
               <table>
                 <thead>
@@ -71,9 +146,7 @@ export default function Transaction(){
                 <tbody>
                   {transactions.map((transaction) => (
                     <tr key={transaction._id}>
-                      <td className="padded-right">
-                        {transaction.idTransaction}
-                      </td>
+                      <td className="padded-right">{transaction.idTransaction}</td>
                       <td>
                         {moment
                           .tz(transaction.createdAt, "Asia/Jakarta")
@@ -103,29 +176,24 @@ export default function Transaction(){
                       ) : (
                         <td></td>
                       )}
-                      {transaction.status === "PENDING" && transaction.imgPayment!==null ? (
+                      {transaction.status === "PENDING" && transaction.imgPayment !== null ? (
                         <td className="flex gap-2 items-center justify-center">
                           <button
                             className="bg-green-500 text-white px-2 py-2 rounded-md"
-                            onClick={() => {
-                              // window.open(transaction.imgPayment);
-                            }}
-                            >
+                            onClick={() => handleConfirm(transaction.idTransaction)}
+                          >
                             Confirm
-                        </button>
-                        <button
+                          </button>
+                          <button
                             className="bg-red-500 text-white px-2 py-2 rounded-md"
-                            onClick={() => {
-                              // window.open(transaction.imgPayment);
-                            }}
-                        >
+                            onClick={() => handleReject(transaction.idTransaction)}
+                          >
                             Reject
-                        </button>
+                          </button>
                         </td>
                       ) : (
                         <td></td>
                       )}
-                      
                     </tr>
                   ))}
                 </tbody>
@@ -142,5 +210,5 @@ export default function Transaction(){
         />
       </section>
     </>
-    )
+  );
 }

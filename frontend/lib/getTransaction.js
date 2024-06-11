@@ -91,3 +91,27 @@ export const getNextTransactionId = async () => {
     throw error;
   }
 };
+
+export const confirmTransaction = async (idTransaction) => {
+  console.log(`Confirming transaction with ID: ${idTransaction}`);
+  const response = await fetch(`http://localhost:8000/transactions/${idTransaction}/confirm`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ status: 'APPROVED' }),
+  });
+  const data = await response.json();
+  console.log('Response from confirmTransaction:', data);
+  return data;
+};
+
+export const rejectTransaction = async (idTransaction) => {
+  console.log(`Rejecting transaction with ID: ${idTransaction}`);
+  const response = await fetch(`http://localhost:8000/transactions/${idTransaction}/reject`, {
+    method: 'DELETE',
+  });
+  const data = await response.json();
+  console.log('Response from rejectTransaction:', data);
+  return data;
+};

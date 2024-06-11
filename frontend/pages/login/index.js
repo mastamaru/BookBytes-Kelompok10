@@ -44,7 +44,7 @@ export default function LoginSignup() {
         if (localStorage.getItem("role") === "cashier") {
           console.log("Login Success: Cashier");
           SetMSG("Login Success: Cashier");
-          router.push("cashier/transaksi");
+          router.push("/cashier/transaction");
         } else if (localStorage.getItem("role") === "admin") {
           console.log("Login Success: Admin");
           SetMSG("Login Success: Admin");
@@ -85,7 +85,7 @@ export default function LoginSignup() {
         className="body bg-[url('/assets/bglogin.png')] relative h-[100vh] bg-cover 
       flex flex-col items-center justify-center"
       >
-        <div className="flex flex-col  items-center max-w-full bg-white rounded-[25px] p-14">
+        <form onSubmit={handleLogin} className="flex flex-col  items-center max-w-full bg-white rounded-[25px] p-14">
           <Image src={"/assets/logo.png"} width={180} height={100} alt="logo" />
           <h1 className="font-mplus text-center text-black text-[40px] font-bold leading-normal pb-7 pt-6 px-10">
             Masuk dengan Akun Terdaftar
@@ -117,7 +117,8 @@ export default function LoginSignup() {
           )}
           <div className="pt-5">
             <button
-              onClick={handleLogin}
+              // onClick={handleLogin}
+              type="submit"
               className="rounded-lg border bg-blue-700 text-white font-bold text-lg py-4 px-8"
             >
               Masuk
@@ -129,7 +130,7 @@ export default function LoginSignup() {
           >
             &#60; Kembali
           </button>
-        </div>
+        </form>
       </section>
     </>
   );
