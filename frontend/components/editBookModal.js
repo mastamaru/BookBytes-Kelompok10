@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import Button from "@/components/Button";
 import { editBook } from "@/lib/editBook";
+import { storage, db } from '@/lib/FirebaseConfig'; 
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 
 const predefinedGenres = [
   "Fiksi",
@@ -82,6 +84,28 @@ const inputStyle = {
 
 const EditBookModal = ({ isOpen, onClose, onEditBook, selectedBook }) => {
   const [editedBook, setEditedBook] = useState({ ...selectedBook });
+  const [imgFile, setImgFile] = useState(null);
+  const handleFileUpload = async (imgFile) => {
+    // e.preventDefault();
+    // const file = document.getElementById('fileInput').files[0];
+
+    if (!imgFile) {
+      alert('Please select a file first');
+      return;
+    }
+
+    try {
+      const storageRef = ref(storage, `uploads/${imgFile.name}`);
+      
+      const snapshot = await uploadBytes(storageRef, imgFile);
+      
+      const url = await getDownloadURL(snapshot.ref);
+      setEditedBook({ ...editBook, imgUrl: url });      
+      alert('File uploaded successfully');
+    } catch (error) {
+      console.error('Error uploading file:', error);
+    }
+  };
 
   useEffect(() => {
     setEditedBook({ ...selectedBook });
@@ -123,6 +147,23 @@ const EditBookModal = ({ isOpen, onClose, onEditBook, selectedBook }) => {
                 style={inputStyle}
               />
             </div>
+
+          <div style={inputContainerStyle}>
+          <div>
+            <label style={labelStyle}>Gambar Buku</label>
+            <input 
+              type="file" 
+              value={editedBook.imgFile} 
+              onChange={(e) =>
+                setImgFile(e.target.files[0])
+              }
+              style={inputStyle}
+              />
+          </div>
+          <div className="flex justify-end items-end">
+                <button className="p-1 font-medium font-mplus bg-purple-300 w-fit rounded-md mt-1" type="submit" onClick={() => handleFileUpload(imgFile)}>Upload</button>
+              </div>
+          </div>
 
             <div style={inputContainerStyle}>
               <label style={labelStyle}>Judul Buku</label>

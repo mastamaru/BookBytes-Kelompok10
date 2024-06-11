@@ -5,6 +5,7 @@ import { addTransaction } from "@/lib/addTransaction";
 import { storage, db } from '@/lib/FirebaseConfig'; 
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { useRouter } from "next/router";
+import { addImgPayment } from "@/lib/addImgPayment";
 
 const modalOverlayStyle = {
   position: "fixed",
@@ -74,34 +75,34 @@ const inputStyle = {
 const TransactionBerkah = ({
   isOpen,
   onClose,
-  books,
+  // books,
   transactionID,
   // employeeID,
   totalPrice,
-  username
+  // username
 }) => {
   const router = useRouter();
+  console.log(transactionID);
 
   const [newTransaction, setNewTransaction] = useState({
-    books: "",
-    employeeID: "",
+    // books: "",
+    // employeeID: "",
   });
 
   const handleTransaction = async () => {
-
-    setNewTransaction({
-      ...newTransaction,
-      books: books,
-      // employeeID: employeeID,
-      imgPayment: imgUrl,
-      username: username
-    });
+    console.log(imgUrl, transactionID)
+    // setNewTransaction({
+    //   // ...newTransaction,
+    //   idTransaction: transactionID,
+    //   imgPayment: imgUrl
+    // });
     try {
       // Call your addTransaction function here
-      console.log(newTransaction);
-      await addTransaction(newTransaction);
+      // console.log('newTransaction',newTransaction);
+      await addImgPayment(transactionID, {imgPayment: imgUrl});
       onClose();
-      router.push("/user/historypesanan");
+      alert('upload Bukti Bayar success');
+      window.location.reload();
     } catch (error) {
       console.error("Error adding transaction:", error);
       // Handle error (e.g., show an error message to the user)

@@ -76,7 +76,7 @@ const transactionController = {
     // Tambahkan next untuk middleware
     try {
       const { idTransaction } = req.params;
-      const updatedData = req.body;
+      const updatedData = req.body; 
 
       // Cek apakah transaksi ada
       const transactionExists = await Transaction.findOne({ idTransaction });
@@ -167,6 +167,24 @@ const transactionController = {
       res.status(200).json(mappedTransactions);
     } catch (error) {
       res.status(500).json({ message: "Error retrieving transactions", error });
+    }
+  },
+
+  updateImgPayment: async (req, res) => {
+    try {
+      const { idTransaction } = req.params;
+      const { imgPayment } = req.body;
+      console.log(imgPayment);
+
+      const updatedTransaction = await Transaction.findOneAndUpdate(
+        { idTransaction: idTransaction },
+        { imgPayment: imgPayment },
+        { new: true }
+      );
+
+      res.status(200).json({ success: true, data: updatedTransaction });
+    } catch (error) {
+      res.status(500).json({ message: "Error updating imgPayment", error });
     }
   },
 

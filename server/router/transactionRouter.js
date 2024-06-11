@@ -32,4 +32,6 @@ router.put('/:id/confirm', transactionController.confirmTransaction);
 // Reject a transaction
 router.delete('/:id/reject', transactionController.rejectTransaction);
 
+router.patch("/img/:idTransaction", transactionController.updateImgPayment);
+
 module.exports = router;
