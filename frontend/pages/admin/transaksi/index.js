@@ -97,7 +97,7 @@ export default function Transaksi() {
                     <th>Waktu Transaksi</th>
                     <th>Barang Pembelian</th>
                     <th>Total Harga</th>
-                    <th>Nama Kasir</th>
+                    <th>User</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -119,7 +119,7 @@ export default function Transaksi() {
                         ))}
                       </td>
                       <td className="padded-right">{transaction.totalPrice}</td>
-                      <td>{transaction.employeeName}</td>
+                      <td>{transaction.username}</td>
                     </tr>
                   ))}
                 </tbody>

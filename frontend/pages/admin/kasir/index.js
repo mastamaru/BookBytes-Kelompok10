@@ -52,7 +52,7 @@ export default function Karyawan() {
   const handleAddEmployee = async (newEmployee) => {
     try {
       const response = await fetch(
-        "https://book-bytes-kelompok10.vercel.app/employee",
+        `${process.env.NEXT_PUBLIC_URL}/employee`,
         {
           method: "POST",
           headers: {
