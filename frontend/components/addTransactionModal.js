@@ -3,6 +3,7 @@ import { useState } from "react";
 import { addTransaction } from "@/lib/addTransaction";
 import { storage, db } from '@/lib/FirebaseConfig'; 
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { useRouter } from "next/router";
 
 const modalOverlayStyle = {
   position: "fixed",
@@ -78,6 +79,8 @@ const AddTransactionModal = ({
   totalPrice,
   username
 }) => {
+  const router = useRouter();
+
   const [newTransaction, setNewTransaction] = useState({
     books: "",
     employeeID: "",
@@ -97,7 +100,7 @@ const AddTransactionModal = ({
       console.log(newTransaction);
       await addTransaction(newTransaction);
       onClose();
-      window.location.reload();
+      router.push("/user/historypesanan");
     } catch (error) {
       console.error("Error adding transaction:", error);
       // Handle error (e.g., show an error message to the user)

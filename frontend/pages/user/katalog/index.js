@@ -91,11 +91,11 @@ export default function Katalog(){
                   </div>
                   <div className="flex justify-between items-center mt-2">
                     <div>Stock: {book.stock}</div>
-                    <Button
+                    {/* <Button
                       text={"Beli"}
                       color="blue"
                       className="flex py-1 px-5 text-sm items-center hover:opacity-60"
-                    />
+                    /> */}
                   </div>
                 </div>)
               ) : (
