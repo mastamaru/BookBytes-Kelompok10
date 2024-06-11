@@ -12,7 +12,7 @@
     "@fontsource/m-plus-rounded-1c": "^5.0.7",
     "@fortawesome/free-solid-svg-icons": "^6.4.2",
     "@fortawesome/react-fontawesome": "^0.2.0",
-    "clsx": "^2.0.0",
+    "clsx": "^2.1.1",
     "dotenv": "^16.4.5",
     "firebase": "^10.12.2",
     "moment": "^2.29.4",
