@@ -169,6 +169,75 @@ const transactionController = {
       res.status(500).json({ message: "Error retrieving transactions", error });
     }
   },
-};
 
+  getTransaction: async (req, res, next) => {
+    try {
+      const { idTransaction } = req.params;
+      const transaction = await Transaction.findOne({ idTransaction });
+      if (!transaction) {
+        return res.status(404).json({ message: "Transaction not found" });
+      }
+      res.status(200).json(transaction);
+    } catch (error) {
+      next(error);
+    }
+  },
+
+  updateTransaction: async (req, res, next) => {
+    try {
+      const { idTransaction } = req.params;
+      const updatedData = req.body;
+      const transactionExists = await Transaction.findOne({ idTransaction });
+      if (!transactionExists) {
+        return res.status(404).json({ message: "Transaction not found" });
+      }
+      const updatedTransaction = await Transaction.findOneAndUpdate(
+        { idTransaction },
+        { status: updatedData.status },
+        { new: true }
+      );
+      res.status(200).json({ success: true, data: updatedTransaction });
+    } catch (error) {
+      next(error);
+    }
+  },
+   
+    updateTransactionStatus: async (req, res) => {
+      try {
+        const { idTransaction } = req.params;
+        const { status } = req.body;
+  
+        const updatedTransaction = await Transaction.findOneAndUpdate(
+          { idTransaction },
+          { status },
+          { new: true }
+        );
+  
+        if (!updatedTransaction) {
+          return res.status(404).json({ message: "Transaction not found" });
+        }
+  
+        res.status(200).json({ success: true, data: updatedTransaction });
+      } catch (error) {
+        res.status(500).json({ message: "Error updating transaction status", error });
+      }
+    },
+  
+    deleteTransaction: async (req, res) => {
+      try {
+        const { idTransaction } = req.params;
+  
+        const deletedTransaction = await Transaction.findOneAndDelete({ idTransaction });
+  
+        if (!deletedTransaction) {
+          return res.status(404).json({ message: "Transaction not found" });
+        }
+  
+        res.status(200).json({ success: true, data: deletedTransaction });
+      } catch (error) {
+      res.status(500).json({ message: "Error deleting transaction", error });
+    }
+  },
+};
+  
 module.exports = transactionController;
