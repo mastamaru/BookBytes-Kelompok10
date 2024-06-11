@@ -94,7 +94,7 @@ export const getNextTransactionId = async () => {
 
 export const confirmTransaction = async (idTransaction) => {
   console.log(`Confirming transaction with ID: ${idTransaction}`);
-  const response = await fetch(`http://localhost:8000/transactions/${idTransaction}/confirm`, {
+  const response = await fetch(`https://book-bytes-be.vercel.app/transactions/${idTransaction}/confirm`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
@@ -108,7 +108,7 @@ export const confirmTransaction = async (idTransaction) => {
 
 export const rejectTransaction = async (idTransaction) => {
   console.log(`Rejecting transaction with ID: ${idTransaction}`);
-  const response = await fetch(`http://localhost:8000/transactions/${idTransaction}/reject`, {
+  const response = await fetch(`https://book-bytes-be.vercel.app/transactions/${idTransaction}/reject`, {
     method: 'DELETE',
   });
   const data = await response.json();
