@@ -1,10 +1,10 @@
 import next from "next";
 
-const API_URL = "https://book-bytes-kelompok10.vercel.app";
+// const NEXT_PUBLIC_URL = "https://book-bytes-kelompok10.vercel.app";
 
 export const fetchTransactions = async () => {
   try {
-    const transactionsResponse = await fetch(`${API_URL}/transactions`); // Ganti dengan path ke route 'getAllTransactions' di backend Anda
+    const transactionsResponse = await fetch(`${process.env.NEXT_PUBLIC_URL}/transactions`); // Ganti dengan path ke route 'getAllTransactions' di backend Anda
     if (!transactionsResponse.ok) {
       throw new Error("Network response was not ok for transactions");
     }
@@ -12,7 +12,7 @@ export const fetchTransactions = async () => {
 
     // Fetch employees
     // ...
-    const employeeResponse = await fetch(`${API_URL}/employee`);
+    const employeeResponse = await fetch(`${process.env.NEXT_PUBLIC_URL}/employee`);
     if (!employeeResponse.ok) {
       throw new Error("Network response for employees was not ok");
     }
@@ -39,6 +39,44 @@ export const fetchTransactions = async () => {
   }
 };
 
+export const fetchTransactionsByUsername = async (username) => {
+  try {
+    const transactionsResponse = await fetch(`${process.env.NEXT_PUBLIC_URL}/transactions/user/${username}`);
+    if (!transactionsResponse.ok) {
+      throw new Error("Network response was not ok for transactions by user ID");
+    }
+    const transactions = await transactionsResponse.json();
+
+    // Fetch books to map book titles
+    const bookIDs = transactions.flatMap(transaction => transaction.books.map(book => book.bookID));
+    const uniqueBookIDs = [...new Set(bookIDs)];
+    const booksResponse = await fetch(`${process.env.NEXT_PUBLIC_URL}/books?ids=${uniqueBookIDs.join(",")}`);
+    if (!booksResponse.ok) {
+      throw new Error("Network response for books was not ok");
+    }
+    const booksData = await booksResponse.json();
+
+    const mergeData = transactions.map((transaction) => {
+      const mappedBooks = transaction.books.map((book) => {
+        const matchedBook = booksData.find((b) => b.bookID === book.bookID);
+        return {
+          ...book,
+          title: matchedBook ? matchedBook.title : "Unknown",
+        };
+      });
+      return {
+        ...transaction,
+        books: mappedBooks,
+      };
+    });
+
+    return mergeData;
+  } catch (error) {
+    console.error("Error fetching transactions by user ID:", error);
+    throw error;
+  }
+};
+
 export const getNextTransactionId = async () => {
   try {
     // Fetch transactions to get the count
@@ -52,4 +90,28 @@ export const getNextTransactionId = async () => {
     console.error("Error getting next transaction ID:", error);
     throw error;
   }
+};
+
+export const confirmTransaction = async (idTransaction) => {
+  console.log(`Confirming transaction with ID: ${idTransaction}`);
+  const response = await fetch(`http://localhost:8000/transactions/${idTransaction}/confirm`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ status: 'APPROVED' }),
+  });
+  const data = await response.json();
+  console.log('Response from confirmTransaction:', data);
+  return data;
+};
+
+export const rejectTransaction = async (idTransaction) => {
+  console.log(`Rejecting transaction with ID: ${idTransaction}`);
+  const response = await fetch(`http://localhost:8000/transactions/${idTransaction}/reject`, {
+    method: 'DELETE',
+  });
+  const data = await response.json();
+  console.log('Response from rejectTransaction:', data);
+  return data;
 };

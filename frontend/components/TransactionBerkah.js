@@ -1,4 +1,5 @@
 import React from "react";
+import Image from "next/image";
 import { useState } from "react";
 import { addTransaction } from "@/lib/addTransaction";
 import { storage, db } from '@/lib/FirebaseConfig'; 
@@ -70,7 +71,7 @@ const inputStyle = {
   border: "1px solid #ccc",
 };
 
-const AddTransactionModal = ({
+const TransactionBerkah = ({
   isOpen,
   onClose,
   books,
@@ -92,7 +93,7 @@ const AddTransactionModal = ({
       ...newTransaction,
       books: books,
       // employeeID: employeeID,
-      // imgPayment: imgUrl,
+      imgPayment: imgUrl,
       username: username
     });
     try {
@@ -107,26 +108,26 @@ const AddTransactionModal = ({
     }
   };
 
-  // const [imgFile, setImgFile] = useState(null);
-  // const [imgUrl, setImgUrl] = useState(null);
-  // const handleFileUpload = async (imgFile) => {
-  //   if (!imgFile) {
-  //     alert('Please select a file first');
-  //     return;
-  //   }
+  const [imgFile, setImgFile] = useState(null);
+  const [imgUrl, setImgUrl] = useState(null);
+  const handleFileUpload = async (imgFile) => {
+    if (!imgFile) {
+      alert('Please select a file first');
+      return;
+    }
 
-  //   try {
-  //     const storageRef = ref(storage, `payment/${imgFile.name}`);
+    try {
+      const storageRef = ref(storage, `payment/${imgFile.name}`);
       
-  //     const snapshot = await uploadBytes(storageRef, imgFile);
+      const snapshot = await uploadBytes(storageRef, imgFile);
       
-  //     const url = await getDownloadURL(snapshot.ref);
-  //     setImgUrl(url);   
-  //     alert('File uploaded successfully');
-  //   } catch (error) {
-  //     console.error('Error uploading file:', error);
-  //   }
-  // };
+      const url = await getDownloadURL(snapshot.ref);
+      setImgUrl(url);   
+      alert('File uploaded successfully');
+    } catch (error) {
+      console.error('Error uploading file:', error);
+    }
+  };
 
   return (
     <>
@@ -140,8 +141,9 @@ const AddTransactionModal = ({
                 fontSize: "1.5rem",
               }}
             >
-              = PEMBAYARAN =
+              SCAN QRIS
             </h2>
+            <Image src={"/assets/qris.png"} width={180} height={100} alt="logo" layout="responsive" />
             <h2
               style={{
                 textAlign: "center",
@@ -162,7 +164,7 @@ const AddTransactionModal = ({
             </h2>
 
             {/* upload file bukti bayar */}
-            {/* <div style={inputContainerStyle}>
+            <div style={inputContainerStyle}>
               <label style={labelStyle}>Upload Bukti Bayar</label>
               <input
                 type="file"
@@ -175,7 +177,7 @@ const AddTransactionModal = ({
               <div className="flex justify-end items-end">
                 <button className="p-1 font-medium font-mplus bg-purple-300 w-fit rounded-md mt-1" type="submit" onClick={() => handleFileUpload(imgFile)}>Upload</button>
               </div>
-            </div> */}
+            </div>
 
             <div style={buttonContainerStyle}>
               <div style={cancelButtonStyle} onClick={onClose}>
@@ -192,4 +194,4 @@ const AddTransactionModal = ({
   );
 };
 
-export default AddTransactionModal;
+export default TransactionBerkah;

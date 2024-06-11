@@ -1,8 +1,10 @@
-const API_URL = "https://book-bytes-kelompok10.vercel.app";
 
 export const fetchBooks = async () => {
+  const url = process.env.NEXT_PUBLIC_URL;
+  console.log(url);
+
   try {
-    const booksResponse = await fetch(`${API_URL}/books`);
+    const booksResponse = await fetch(`${process.env.NEXT_PUBLIC_URL}/books`);
     if (!booksResponse.ok) {
       throw new Error("Network response was not ok for books");
     }

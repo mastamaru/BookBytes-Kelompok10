@@ -1,8 +1,8 @@
-const API_URL = "https://book-bytes-kelompok10.vercel.app";
+// const NEXT_PUBLIC_URL = "https://book-bytes-kelompok10.vercel.app";
 
 export const fetchEmployees = async () => {
   try {
-    const employeeResponse = await fetch(`${API_URL}/employee`);
+    const employeeResponse = await fetch(`${process.env.NEXT_PUBLIC_URL}/employee`);
     if (!employeeResponse.ok) {
       throw new Error("Network response was not ok for employee");
     }

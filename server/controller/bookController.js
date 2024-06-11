@@ -3,7 +3,7 @@ const Book = require("../models/bookModel");
 const bookController = {
   addBook: async (req, res) => {
     try {
-      const { bookID, author, title, isbn, price, year, publisher, genre } =
+      const { bookID, author, title, isbn, price, year, publisher, genre, stock, imgUrl } =
         req.body;
 
       const newBook = await Book.create({
@@ -15,6 +15,8 @@ const bookController = {
         year,
         publisher,
         genre,
+        stock,
+        imgUrl,
       });
 
       res.status(201).json(newBook);

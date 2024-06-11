@@ -205,6 +205,18 @@ const EditBookModal = ({ isOpen, onClose, onEditBook, selectedBook }) => {
             </div>
 
             <div style={inputContainerStyle}>
+              <label style={labelStyle}>Stock</label>
+              <input
+                type="text"
+                value={editedBook.stock}
+                onChange={(e) =>
+                  setEditedBook({ ...editedBook, stock: e.target.value })
+                }
+                style={inputStyle}
+              />
+            </div>
+
+            <div style={inputContainerStyle}>
               <label style={labelStyle}>Harga</label>
               <input
                 type="text"

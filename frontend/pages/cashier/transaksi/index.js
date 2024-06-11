@@ -32,17 +32,26 @@ export default function Kasir() {
   useEffect(() => {
     const token = localStorage.getItem("token");
     const username = localStorage.getItem("username");
+    const role = localStorage.getItem("role");
 
     const isTokenValid = () => {
       setUserName(username);
-      return token != null;
+      return token != null && role === "cashier";
     };
 
     const fetchData = async () => {
       try {
         if (!isTokenValid()) {
-          router.push("/login");
-          return;
+          console.log("Navigation error: You are authorized to see this page!");
+          if(token == null){
+            router.push("/login");
+          }
+          if(role === "admin"){
+            router.push("/admin/transaksi");
+          } 
+          if(role === "user"){
+            router.push("/user/katalog");
+          }
         }
         const nextId = await getNextTransactionId();
         setTransactionID(nextId);

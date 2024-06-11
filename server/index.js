@@ -9,8 +9,14 @@ const transactionRouter = require("./router/transactionRouter");
 const employeeRouter = require("./router/employeeRouter");
 
 const app = express();
-app.use(cors()); // Middleware untuk mengizinkan CORS
+app.use(cors({
+  origin: ["http://localhost:3000", "https://book-bytes-fe.vercel.app"],
+  methods: ["GET", "POST", "PUT", "DELETE"],
+})); // Middleware untuk mengizinkan CORS
 
+app.get('/', (req, res) => {
+  res.send('Hello World!');
+});
 app.use(express.json()); // Middleware untuk parsing JSON requests
 app.use("/books", bookRouter); // Menggunakan bookRouter untuk endpoint '/books'
 app.use("/transactions", transactionRouter); // Menggunakan transactionRouter untuk endpoint '/transactions'
