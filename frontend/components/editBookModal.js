@@ -82,6 +82,28 @@ const inputStyle = {
 
 const EditBookModal = ({ isOpen, onClose, onEditBook, selectedBook }) => {
   const [editedBook, setEditedBook] = useState({ ...selectedBook });
+  const [imgFile, setImgFile] = useState(null);
+  const handleFileUpload = async (imgFile) => {
+    // e.preventDefault();
+    // const file = document.getElementById('fileInput').files[0];
+
+    if (!imgFile) {
+      alert('Please select a file first');
+      return;
+    }
+
+    try {
+      const storageRef = ref(storage, `uploads/${imgFile.name}`);
+      
+      const snapshot = await uploadBytes(storageRef, imgFile);
+      
+      const url = await getDownloadURL(snapshot.ref);
+      setNewBook({ ...newBook, imgUrl: url });      
+      alert('File uploaded successfully');
+    } catch (error) {
+      console.error('Error uploading file:', error);
+    }
+  };
 
   useEffect(() => {
     setEditedBook({ ...selectedBook });
@@ -123,6 +145,21 @@ const EditBookModal = ({ isOpen, onClose, onEditBook, selectedBook }) => {
                 style={inputStyle}
               />
             </div>
+
+          <div style={inputContainerStyle}>
+          <div>
+            <label style={labelStyle}>Gambar Buku</label>
+            <input 
+              type="file" 
+              value={editedBook.imgFile} 
+              onChange={(e) =>
+                setImgFile(e.target.files[0])
+                // setNewBook({ ...newBook, imgUrl: e.target.value })
+              }
+              style={inputStyle}
+              />
+          </div>
+          </div>
 
             <div style={inputContainerStyle}>
               <label style={labelStyle}>Judul Buku</label>
