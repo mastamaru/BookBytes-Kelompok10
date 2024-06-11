@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { fetchBooks } from "@/lib/getBook";
 import { fetchTransactions } from "@/lib/getTransaction";
 import { fetchTransactionsByUsername } from "@/lib/getTransaction";
+import { getNextTransactionId } from "@/lib/getTransaction";
 import TransactionBerkah from "@/components/TransactionBerkah";
 import moment from "moment";
 import "moment-timezone";
@@ -26,6 +27,7 @@ export default function Transaction(){
         const token = localStorage.getItem("token");
         const role = localStorage.getItem("role");
         username = localStorage.getItem('username')
+        console.log(username)
     
         const isTokenValid = () => {
           return token != null && role === "user";
@@ -201,15 +203,15 @@ export default function Transaction(){
                 // onClick={() => router.push('/user/historypesanan')}
                 onClick={() => setIsTransactionModalOpen(true)}
               />
-              <TransactionBerkah
-                isOpen={isTransactionModalOpen}
-                onClose={() => setIsTransactionModalOpen(false)}
-                books={books}
-                transactionID={transactionId}
-                employeeID={employeeId}
-                totalPrice={total}
-                onAddRow={handleTransaction}
-              />
+                <TransactionBerkah
+                  isOpen={isTransactionModalOpen}
+                  onClose={() => setIsTransactionModalOpen(false)}
+                  // books={books}
+                  transactionID={transaction.idTransaction}
+                  totalPrice={total}
+                  onAddRow={handleTransaction}
+                  // username={username}
+                />
                         </td>
                       ) : (
                         <td></td>
