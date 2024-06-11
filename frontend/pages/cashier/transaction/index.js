@@ -10,12 +10,25 @@ import Head from "next/head";
 
 export default function Transaction() {
   const [transactions, setTransactions] = useState([]);
-  const router = useRouter();
 
   const handleLogout = () => {
     localStorage.removeItem("token");
     router.push("/login");
   };
+
+  useEffect(() => {
+    const getTransaction = async () => {
+      try {
+        const data = await fetchTransactions();
+        console.log("Fetched Transactions:", data);
+        setTransactions(data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    getTransaction();
+  }, []);
 
   const handleConfirm = async (idTransaction) => {
     console.log(`Confirm button clicked for transaction ID: ${idTransaction}`);
@@ -48,20 +61,6 @@ export default function Transaction() {
       console.error(error);
     }
   };
-
-  useEffect(() => {
-    const getTransaction = async () => {
-      try {
-        const data = await fetchTransactions();
-        console.log("Fetched Transactions:", data);
-        setTransactions(data);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
-    getTransaction();
-  }, []);
 
   return (
     <>
