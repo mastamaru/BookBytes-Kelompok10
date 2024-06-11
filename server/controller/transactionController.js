@@ -222,6 +222,32 @@ const transactionController = {
         res.status(500).json({ message: "Error updating transaction status", error });
       }
     },
+
+    confirmTransaction: async (req, res) => {
+      try {
+        const { id } = req.params;
+        const transaction = await Transaction.findByIdAndUpdate(id, { status: 'APPROVED' }, { new: true });
+        if (!transaction) {
+          return res.status(404).json({ success: false, message: 'Transaction not found' });
+        }
+        res.status(200).json({ success: true, data: transaction });
+      } catch (error) {
+        res.status(500).json({ success: false, message: 'Failed to confirm transaction' });
+      }
+    },
+
+    rejectTransaction: async (req, res) => {
+      try {
+        const { id } = req.params;
+        const transaction = await Transaction.findByIdAndDelete(id);
+        if (!transaction) {
+          return res.status(404).json({ success: false, message: 'Transaction not found' });
+        }
+        res.status(200).json({ success: true });
+      } catch (error) {
+        res.status(500).json({ success: false, message: 'Failed to reject transaction' });
+      }
+    },
   
     deleteTransaction: async (req, res) => {
       try {

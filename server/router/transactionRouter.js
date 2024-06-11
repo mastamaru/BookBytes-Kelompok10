@@ -26,4 +26,10 @@ router.delete("/:idTransaction/reject", transactionController.deleteTransaction)
 //get a specific transaction by idTransaction
 router.get("/:idTransaction", transactionController.getTransaction);
 
+// Confirm a transaction
+router.put('/:id/confirm', transactionController.confirmTransaction);
+
+// Reject a transaction
+router.delete('/:id/reject', transactionController.rejectTransaction);
+
 module.exports = router;

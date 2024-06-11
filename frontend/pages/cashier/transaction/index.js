@@ -10,9 +10,60 @@ import Head from "next/head";
 
 export default function Transaction() {
   const [transactions, setTransactions] = useState([]);
+  const [username, setUserName] = useState("");
+  const router = useRouter();
+
+  useEffect(() => {
+    // add token validation to check user session
+    const token = localStorage.getItem("token");
+    const role = localStorage.getItem("role");
+    const username = localStorage.getItem("username");
+    
+    console.log(token)
+
+    const isTokenValid = () => {
+      setUserName(username);
+      return token != null && role === "user";
+    };
+
+    if (!isTokenValid()) {
+      console.log("Navigation error: You are authorized to see this page!");
+      if(token == null){
+        // router.push("/login");
+      }
+      if(role === "admin"){
+        router.push("/admin/transaksi");
+      } 
+      if(role === "cashier"){
+        router.push("/cashier/transaction");
+      }
+    }
+
+    const fetchData = async () => {
+      try {
+        if (!isTokenValid()) {
+          // router.push("/login");
+          return;
+        }
+        const nextId = await getNextTransactionId();
+        setTransactionID(nextId);
+        const employeesData = await fetchEmployees();
+        setEmployees(employeesData);
+        const employee = employeesData.find((emp) => emp.username === username);
+        setEmployeeId(employee ? employee.id : null);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+        // Handle error (e.g., show an error message to the user)
+      }
+    };
+
+    fetchData();
+  }, []);
 
   const handleLogout = () => {
+    // Menghapus token dari localStorage
     localStorage.removeItem("token");
+    // Redirect ke halaman login
     router.push("/login");
   };
 
@@ -47,7 +98,7 @@ export default function Transaction() {
       console.error(error);
     }
   };
-
+  
   const handleReject = async (idTransaction) => {
     console.log(`Reject button clicked for transaction ID: ${idTransaction}`);
     try {
@@ -60,7 +111,7 @@ export default function Transaction() {
     } catch (error) {
       console.error(error);
     }
-  };
+  };  
 
   return (
     <>
