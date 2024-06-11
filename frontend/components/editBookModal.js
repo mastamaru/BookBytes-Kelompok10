@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import Button from "@/components/Button";
 import { editBook } from "@/lib/editBook";
+import { storage, db } from '@/lib/FirebaseConfig'; 
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 
 const predefinedGenres = [
   "Fiksi",
@@ -98,7 +100,7 @@ const EditBookModal = ({ isOpen, onClose, onEditBook, selectedBook }) => {
       const snapshot = await uploadBytes(storageRef, imgFile);
       
       const url = await getDownloadURL(snapshot.ref);
-      setNewBook({ ...newBook, imgUrl: url });      
+      setEditedBook({ ...editBook, imgUrl: url });      
       alert('File uploaded successfully');
     } catch (error) {
       console.error('Error uploading file:', error);
