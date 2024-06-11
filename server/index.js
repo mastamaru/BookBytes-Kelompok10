@@ -9,7 +9,10 @@ const transactionRouter = require("./router/transactionRouter");
 const employeeRouter = require("./router/employeeRouter");
 
 const app = express();
-app.use(cors()); // Middleware untuk mengizinkan CORS
+app.use(cors({
+  origin: ["http://localhost:3000", "https://book-bytes-fe.vercel.app"],
+  methods: ["GET", "POST", "PUT", "DELETE"],
+})); // Middleware untuk mengizinkan CORS
 
 app.get('/', (req, res) => {
   res.send('Hello World!');
