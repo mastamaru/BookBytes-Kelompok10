@@ -11,7 +11,7 @@ const employeeRouter = require("./router/employeeRouter");
 const app = express();
 app.use(cors({
   origin: ["http://localhost:3000", "https://book-bytes-fe.vercel.app"],
-  methods: ["GET", "POST", "PUT", "DELETE"],
+  methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
 })); // Middleware untuk mengizinkan CORS
 
 app.get('/', (req, res) => {
