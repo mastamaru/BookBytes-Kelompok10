@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { fetchBooks } from "@/lib/getBook";
 import { fetchTransactions } from "@/lib/getTransaction";
 import { fetchTransactionsByUsername } from "@/lib/getTransaction";
-import AddTransactionModal from "@/components/addTransactionModal";
+import TransactionBerkah from "@/components/TransactionBerkah";
 import moment from "moment";
 import "moment-timezone";
 import Button from "@/components/Button";
@@ -201,7 +201,7 @@ export default function Transaction(){
                 // onClick={() => router.push('/user/historypesanan')}
                 onClick={() => setIsTransactionModalOpen(true)}
               />
-              <AddTransactionModal
+              <TransactionBerkah
                 isOpen={isTransactionModalOpen}
                 onClose={() => setIsTransactionModalOpen(false)}
                 books={books}
